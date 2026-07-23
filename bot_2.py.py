@@ -68,16 +68,16 @@ TRADING_PLATFORMS = [
     "Crypto.com",
 ]
 
-# --- SIDEBAR: EXACT EAGLE BRANDING ---
+# --- SIDEBAR: EXACT USER IMAGE INTEGRATION ---
 with st.sidebar:
     st.markdown("### 🦅 NEXA ULTRA PRO")
     st.markdown("*Zia's Autonomous Trading Hub*")
     st.divider()
 
-    # Eagle Logo/Slidebar Image Integration
+    # Exact User Image Integration from Medium Link
     st.image(
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60",
-        caption="Zia's Eagle Node Active",
+        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+        caption="Zia's Trading Bot Design Active",
         use_container_width=True,
     )
 
@@ -111,8 +111,8 @@ if menu == "📊 Live Dashboard & AI Scalper":
             "### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision"
         )
         st.image(
-            "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
-            caption="AI Neural Vision & Candle Matrix Execution",
+            "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+            caption="AI Neural Vision & Trading Architecture",
             use_container_width=True,
         )
     with col_img2:
@@ -143,12 +143,6 @@ elif menu == "🔐 Platform Vault & API Hub":
     st.title("🔐 Secure Exchange Vault & API Manager")
     st.markdown(
         "Unlock the Vault to connect your trading platforms with instant search."
-    )
-
-    st.image(
-        "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&auto=format&fit=crop&q=60",
-        caption="Secured API Vault & Ecosystem Gate",
-        use_container_width=True,
     )
 
     search_query = st.text_input(
@@ -199,13 +193,11 @@ elif menu == "🖼️ Custom Image Gallery & Splash":
     st.markdown(
         "Manage your custom app entrance images and background assets."
     )
-
-    uploaded_file = st.file_uploader(
-        "Upload Custom Entry Image from Phone Album",
-        type=["jpg", "png", "jpeg"],
+    st.image(
+        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+        caption="Primary Theme Design Asset",
+        width=500,
     )
-    if uploaded_file is not None:
-        st.success("New custom image successfully loaded into bot memory!")
 
 
 # ==========================================
@@ -231,26 +223,6 @@ elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
         st.success(
             "🗣️ Bot Audio Synthesized: 'Hello Zia, welcome back! Ready for trading profits today?'"
         )
-
-    st.markdown("### Select from 15+ Neural Voice Profiles")
-    voice_modes = [
-        "1. Hello Zia - Personal AI Assistant (Default)",
-        "2. Tactical Commander",
-        "3. High Frequency Analyst",
-        "4. Risk Guardian Voice",
-        "5. Scalp Specialist",
-        "6. Swing Trader Macro Voice",
-        "7. Arbitrage Sentinel",
-        "8. Liquidator Voice Alert",
-        "9. Profit Milestone Synthesizer",
-        "10. Stop-Loss Safety Monitor",
-        "11. Bull Run Announcer",
-        "12. Bear Market Defensive Mode",
-        "13. Autonomous Neural Alpha",
-        "14. VIP Portfolio Executive",
-        "15. Deep Quantum Voice Engine",
-    ]
-    st.selectbox("Active Voice Engine:", voice_modes)
 
 
 # ==========================================
