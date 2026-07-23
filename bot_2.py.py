@@ -48,6 +48,8 @@ st.markdown(
 # --- SESSION STATE ---
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
+if "uploaded_gallery_image" not in st.session_state:
+    st.session_state.uploaded_gallery_image = None
 
 # --- TRADING PLATFORMS LIST ---
 TRADING_PLATFORMS = [
@@ -189,15 +191,34 @@ elif menu == "🔐 Platform Vault & API Hub":
 # 3. CUSTOM IMAGE GALLERY & SPLASH
 # ==========================================
 elif menu == "🖼️ Custom Image Gallery & Splash":
-    st.title("🖼️ App Splash & Gallery Hub")
+    st.title("🖼️ Custom Image Gallery & Splash Hub")
     st.markdown(
-        "Manage your custom app entrance images and background assets."
+        "Upload and manage your app theme assets directly from your device."
     )
-    st.image(
-        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
-        caption="Primary Theme Design Asset",
-        width=500,
+
+    uploaded_file = st.file_uploader(
+        "Upload New Gallery / Splash Image", type=["jpg", "png", "jpeg"]
     )
+    if uploaded_file is not None:
+        st.session_state.uploaded_gallery_image = uploaded_file
+        st.success(
+            "New image successfully uploaded and saved to active session!"
+        )
+
+    if st.session_state.uploaded_gallery_image is not None:
+        st.markdown("### 🖼️ Active Custom Gallery Asset:")
+        st.image(
+            st.session_state.uploaded_gallery_image,
+            caption="User Uploaded Gallery Asset",
+            use_container_width=True,
+        )
+    else:
+        st.markdown("### 🖼️ Default Theme Gallery Asset:")
+        st.image(
+            "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+            caption="Default Berg Codex Design",
+            use_container_width=True,
+        )
 
 
 # ==========================================
@@ -219,7 +240,6 @@ elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
         unsafe_allow_html=True,
     )
 
-    # Real Browser Audio Speech Synthesis Widget
     语音Text = "Hello Zia, welcome back! Ready for trading profits today? All systems online."
     voice_html = f"""
     <div style="padding: 10px 0;">
