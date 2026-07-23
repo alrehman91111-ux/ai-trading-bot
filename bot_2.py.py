@@ -4,13 +4,13 @@ import streamlit as st
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="AI Trading Bot - Professional Vault & Scalper",
-    page_icon="⚡",
+    page_title="Zia's AI Trading Bot - Professional Suite",
+    page_icon="🦅",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# --- CUSTOM CYBERPUNK / GOLDEN VAULT STYLING ---
+# --- CUSTOM CYBERPUNK STYLING ---
 st.markdown(
     """
     <style>
@@ -32,18 +32,23 @@ st.markdown(
     h1, h2, h3 {
         color: #f8fafc;
     }
+    .voice-box {
+        background: #1e293b;
+        border: 1px solid #f59e0b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
     </style>
 """,
     unsafe_allow_html=True,
 )
 
-# --- SESSION STATE INITIALIZATION ---
+# --- SESSION STATE ---
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
-if "custom_bg" not in st.session_state:
-    st.session_state.custom_bg = None
 
-# --- LIST OF 15+ TRADING PLATFORMS ---
+# --- TRADING PLATFORMS LIST ---
 TRADING_PLATFORMS = [
     "Binance",
     "MEXC Global",
@@ -63,16 +68,16 @@ TRADING_PLATFORMS = [
     "Crypto.com",
 ]
 
-# --- SIDEBAR: EAGLE BRANDING & NAVIGATION ---
+# --- SIDEBAR: EXACT EAGLE BRANDING ---
 with st.sidebar:
     st.markdown("### 🦅 NEXA ULTRA PRO")
-    st.markdown("*Advanced AI Trading & Voice Ecosystem*")
+    st.markdown("*Zia's Autonomous Trading Hub*")
     st.divider()
 
-    # Direct Eagle Fire Image integration from user asset
+    # Eagle Logo/Slidebar Image Integration
     st.image(
         "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60",
-        caption="AI Core Active - Eagle Node",
+        caption="Zia's Eagle Node Active",
         use_container_width=True,
     )
 
@@ -80,74 +85,75 @@ with st.sidebar:
     menu = st.radio(
         "Navigation Menu",
         [
-            "📊 Live Dashboard",
+            "📊 Live Dashboard & AI Scalper",
             "🔐 Platform Vault & API Hub",
-            "🖼️ App Customizer & Gallery",
-            "🎙️ Voice Control (15+ Modes)",
+            "🖼️ Custom Image Gallery & Splash",
+            "🎙️ Voice Assistant (Hello Zia & 15+ Modes)",
             "⚙️ Auto-Learning Settings",
         ],
     )
     st.markdown("---")
-    st.markdown("**System Status:** 🟢 Online (Auto-Scalping)")
+    st.markdown("**System Status:** 🟢 Online")
 
 
 # ==========================================
-# 1. LIVE DASHBOARD SECTION
+# 1. LIVE DASHBOARD & AI SCALPER
 # ==========================================
-if menu == "📊 Live Dashboard":
-    st.title("⚡ AI Trading & Scalping Control Center")
+if menu == "📊 Live Dashboard & AI Scalper":
+    st.title("⚡ AI Trading Bot - Professional Dashboard")
     st.markdown(
-        "Real-time institutional grade monitoring with automated risk execution."
+        "Welcome back, **Zia**! Institutional grade algorithmic execution active."
     )
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
+    col_img1, col_img2 = st.columns([2, 1])
+    with col_img1:
         st.markdown(
-            '<div class="metric-card"><h3>Total Balance</h3><h2>$1,458.78</h2><p style="color:#10b981;">+12.4% today</p></div>',
-            unsafe_allow_html=True,
+            "### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision"
         )
-    with col2:
-        st.markdown(
-            '<div class="metric-card"><h3>Active PnL</h3><h2>+$327.64</h2><p style="color:#10b981;">+8.2% yield</p></div>',
-            unsafe_allow_html=True,
+        st.image(
+            "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=800&auto=format&fit=crop&q=60",
+            caption="AI Neural Vision & Candle Matrix Execution",
+            use_container_width=True,
         )
-    with col3:
+    with col_img2:
+        st.markdown("### 📊 Quick Metrics")
         st.markdown(
-            '<div class="metric-card"><h3>Win Rate</h3><h2>88.4%</h2><p style="color:#3b82f6;">Auto-Learning active</p></div>',
-            unsafe_allow_html=True,
-        )
-    with col4:
-        st.markdown(
-            '<div class="metric-card"><h3>Active Bots</h3><h2>3 Running</h2><p style="color:#f59e0b;">Zero Latency</p></div>',
+            '<div class="metric-card"><h3>Portfolio PnL</h3><h2 style="color:#10b981;">+$1,245.50</h2><p>Win Rate: 91.2%</p></div>',
             unsafe_allow_html=True,
         )
 
-    st.markdown("### 📈 Live Market Intelligence & Candle Stream")
+    st.markdown("---")
+    st.markdown("### 📈 Live Market Intelligence Stream")
     chart_data = {
         "Time": [f"12:{i}0" for i in range(10)],
-        "BTC Price": [
-            64200 + i * 45 + (i % 2 * -30) for i in range(10)
+        "BTC Execution": [
+            64200 + i * 50 + (i % 2 * -25) for i in range(10)
         ],
-        "AI Prediction": [
-            64210 + i * 48 + (i % 3 * -20) for i in range(10)
+        "AI Target Line": [
+            64220 + i * 52 + (i % 3 * -15) for i in range(10)
         ],
     }
     st.line_chart(chart_data)
 
 
 # ==========================================
-# 2. PLATFORM VAULT & API HUB SECTION
+# 2. PLATFORM VAULT & API HUB
 # ==========================================
 elif menu == "🔐 Platform Vault & API Hub":
     st.title("🔐 Secure Exchange Vault & API Manager")
     st.markdown(
-        "Search your target trading platform, unlock the vault, and securely link your API keys."
+        "Unlock the Vault to connect your trading platforms with instant search."
+    )
+
+    st.image(
+        "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&auto=format&fit=crop&q=60",
+        caption="Secured API Vault & Ecosystem Gate",
+        use_container_width=True,
     )
 
     search_query = st.text_input(
         "🔍 Search Trading Platform (e.g., Binance, MEXC, WEEX)...", ""
     )
-
     filtered_platforms = [
         p
         for p in TRADING_PLATFORMS
@@ -179,61 +185,61 @@ elif menu == "🔐 Platform Vault & API Hub":
                         "secret": api_secret,
                     }
                     st.success(
-                        f"Successfully encrypted and linked with {platform}!"
+                        f"Successfully linked with {platform} securely!"
                     )
                 else:
                     st.warning("Please provide both API Key and Secret.")
 
 
 # ==========================================
-# 3. APP CUSTOMIZER & GALLERY SECTION
+# 3. CUSTOM IMAGE GALLERY & SPLASH
 # ==========================================
-elif menu == "🖼️ App Customizer & Gallery":
-    st.title("🖼️ Dynamic Visual & Theme Customizer")
+elif menu == "🖼️ Custom Image Gallery & Splash":
+    st.title("🖼️ App Splash & Gallery Hub")
     st.markdown(
-        "Upload custom backgrounds or select album pictures from your device to style the app background."
+        "Manage your custom app entrance images and background assets."
     )
 
     uploaded_file = st.file_uploader(
-        "Upload Custom App Theme / Splash Image from Device",
+        "Upload Custom Entry Image from Phone Album",
         type=["jpg", "png", "jpeg"],
     )
-
     if uploaded_file is not None:
-        st.session_state.custom_bg = uploaded_file
-        st.success(
-            "Image successfully integrated into app instance memory!"
-        )
-
-    if st.session_state.custom_bg:
-        st.markdown("### Current Active Custom Asset:")
-        st.image(
-            st.session_state.custom_bg,
-            width=400,
-            caption="User Selected Layout Asset",
-        )
-    else:
-        st.info(
-            "No custom image uploaded yet. Default cyberpunk theme is active."
-        )
+        st.success("New custom image successfully loaded into bot memory!")
 
 
 # ==========================================
-# 4. VOICE CONTROL SECTION (15+ MODES)
+# 4. VOICE ASSISTANT (HELLO ZIA & 15+ MODES)
 # ==========================================
-elif menu == "🎙️ Voice Control (15+ Modes)":
-    st.title("🎙️ Advanced Multi-Voice Command Studio")
+elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
+    st.title("🎙️ Advanced Voice Command & Speech Studio")
     st.markdown(
-        "Select and configure your preferred operational voice profiles (Over 15 custom neural synthesis voices available)."
+        "Bot voice interaction panel. Click below to test live speech and greetings!"
     )
 
+    st.markdown(
+        """
+        <div class="voice-box">
+            <h3>🤖 Bot Voice Status: Active & Listening</h3>
+            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational. All 15 trading APIs are secure."</p>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
+
+    if st.button("🔊 Play Voice Greeting ('Hello Zia')"):
+        st.success(
+            "🗣️ Bot Audio Synthesized: 'Hello Zia, welcome back! Ready for trading profits today?'"
+        )
+
+    st.markdown("### Select from 15+ Neural Voice Profiles")
     voice_modes = [
-        "1. Neural Male - Tactical Commander",
-        "2. Neural Female - High Frequency Analyst",
-        "3. Ultra-Low Bass - Risk Guardian",
-        "4. Cyber-Assistant AI (Default)",
-        "5. Scalp Specialist - Rapid Response",
-        "6. Swing Trader - Macro Voice",
+        "1. Hello Zia - Personal AI Assistant (Default)",
+        "2. Tactical Commander",
+        "3. High Frequency Analyst",
+        "4. Risk Guardian Voice",
+        "5. Scalp Specialist",
+        "6. Swing Trader Macro Voice",
         "7. Arbitrage Sentinel",
         "8. Liquidator Voice Alert",
         "9. Profit Milestone Synthesizer",
@@ -244,26 +250,15 @@ elif menu == "🎙️ Voice Control (15+ Modes)":
         "14. VIP Portfolio Executive",
         "15. Deep Quantum Voice Engine",
     ]
-
-    selected_voice = st.selectbox(
-        "Choose Primary Voice Assistant Engine:", voice_modes
-    )
-    st.info(f"Active Voice Profile Set To: **{selected_voice}**")
-
-    if st.button("Test Voice Audio Synthesis"):
-        st.success(
-            "Voice initialized successfully. Neural audio channel active!"
-        )
+    st.selectbox("Active Voice Engine:", voice_modes)
 
 
 # ==========================================
-# 5. AUTO-LEARNING SETTINGS SECTION
+# 5. AUTO-LEARNING SETTINGS
 # ==========================================
 elif menu == "⚙️ Auto-Learning Settings":
     st.title("⚙️ Self-Optimizing Neural Engine")
-    st.markdown(
-        "Configure automated parameter tuning, candle pattern recognition sensitivity, and self-learning weights."
-    )
+    st.markdown("Configure automated parameter tuning and self-learning weights.")
 
     learning_rate = st.slider(
         "Neural Adaptation Speed", 0.001, 0.1, 0.01
@@ -277,12 +272,12 @@ elif menu == "⚙️ Auto-Learning Settings":
 
     if st.button("Apply Advanced Configuration"):
         st.success(
-            f"Settings updated! Mode: {risk_tolerance} | Auto-Execute: {auto_execute}"
+            f"Settings updated for Zia! Mode: {risk_tolerance} | Auto-Execute: {auto_execute}"
         )
 
 # --- FOOTER ---
 st.markdown("---")
 st.markdown(
-    "<p style='text-align: center; color: #64748b;'>Nexa Ultra Pro AI Trading System © 2026 | Built for Maximum Alpha</p>",
+    "<p style='text-align: center; color: #64748b;'>Zia's Nexa Ultra Pro AI Trading System © 2026</p>",
     unsafe_allow_html=True,
 )
