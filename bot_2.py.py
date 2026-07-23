@@ -29,14 +29,6 @@ st.markdown(
         border-radius: 12px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-    .vault-box {
-        background: #1e293b;
-        border: 2px dashed #f59e0b;
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
     h1, h2, h3 {
         color: #f8fafc;
     }
@@ -77,10 +69,10 @@ with st.sidebar:
     st.markdown("*Advanced AI Trading & Voice Ecosystem*")
     st.divider()
 
-    # Display Eagle Branding image if uploaded or use placeholder logic
+    # Direct Eagle Fire Image integration from user asset
     st.image(
-        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60",
-        caption="AI Core Active",
+        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&auto=format&fit=crop&q=60",
+        caption="AI Core Active - Eagle Node",
         use_container_width=True,
     )
 
@@ -131,7 +123,6 @@ if menu == "📊 Live Dashboard":
         )
 
     st.markdown("### 📈 Live Market Intelligence & Candle Stream")
-    # Simulated Live Candle Data visual
     chart_data = {
         "Time": [f"12:{i}0" for i in range(10)],
         "BTC Price": [
@@ -157,7 +148,6 @@ elif menu == "🔐 Platform Vault & API Hub":
         "🔍 Search Trading Platform (e.g., Binance, MEXC, WEEX)...", ""
     )
 
-    # Filter platforms based on search query
     filtered_platforms = [
         p
         for p in TRADING_PLATFORMS
@@ -201,7 +191,7 @@ elif menu == "🔐 Platform Vault & API Hub":
 elif menu == "🖼️ App Customizer & Gallery":
     st.title("🖼️ Dynamic Visual & Theme Customizer")
     st.markdown(
-        "Upload custom backgrounds, entrysplash pictures, or select from your device album to personalize the app layout."
+        "Upload custom backgrounds or select album pictures from your device to style the app background."
     )
 
     uploaded_file = st.file_uploader(
@@ -224,7 +214,7 @@ elif menu == "🖼️ App Customizer & Gallery":
         )
     else:
         st.info(
-            "No custom image uploaded yet. Default cyber-gold theme is active."
+            "No custom image uploaded yet. Default cyberpunk theme is active."
         )
 
 
