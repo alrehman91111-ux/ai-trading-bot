@@ -1,6 +1,7 @@
 import base64
 import time
 import streamlit as st
+import streamlit.components.v1 as components
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(
@@ -74,7 +75,6 @@ with st.sidebar:
     st.markdown("*Zia's Autonomous Trading Hub*")
     st.divider()
 
-    # Exact User Image Integration from Medium Link
     st.image(
         "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
         caption="Zia's Trading Bot Design Active",
@@ -206,23 +206,42 @@ elif menu == "🖼️ Custom Image Gallery & Splash":
 elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
     st.title("🎙️ Advanced Voice Command & Speech Studio")
     st.markdown(
-        "Bot voice interaction panel. Click below to test live speech and greetings!"
+        "Bot voice interaction panel. Click below to trigger live browser speech synthesis!"
     )
 
     st.markdown(
         """
         <div class="voice-box">
-            <h3>🤖 Bot Voice Status: Active & Listening</h3>
+            <h3>🤖 Bot Voice Status: Active & Ready</h3>
             <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational. All 15 trading APIs are secure."</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
 
-    if st.button("🔊 Play Voice Greeting ('Hello Zia')"):
-        st.success(
-            "🗣️ Bot Audio Synthesized: 'Hello Zia, welcome back! Ready for trading profits today?'"
-        )
+    # Real Browser Audio Speech Synthesis Widget
+    语音Text = "Hello Zia, welcome back! Ready for trading profits today? All systems online."
+    voice_html = f"""
+    <div style="padding: 10px 0;">
+        <button onclick="speakText()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer;">
+            🔊 Speak Audio ("Hello Zia")
+        </button>
+    </div>
+    <script>
+    function speakText() {{
+        if ('speechSynthesis' in window) {{
+            var text = "{语音Text}";
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }} else {{
+            alert("Speech synthesis not supported in this browser.");
+        }}
+    }}
+    </script>
+    """
+    components.html(voice_html, height=100)
 
 
 # ==========================================
