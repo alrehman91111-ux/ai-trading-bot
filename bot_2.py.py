@@ -48,8 +48,10 @@ st.markdown(
 # --- SESSION STATE ---
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
-if "uploaded_gallery_image" not in st.session_state:
-    st.session_state.uploaded_gallery_image = None
+if "active_image" not in st.session_state:
+    st.session_state.active_image = (
+        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png"
+    )
 
 # --- TRADING PLATFORMS LIST ---
 TRADING_PLATFORMS = [
@@ -71,14 +73,15 @@ TRADING_PLATFORMS = [
     "Crypto.com",
 ]
 
-# --- SIDEBAR: EXACT USER IMAGE INTEGRATION ---
+# --- SIDEBAR: DYNAMIC USER IMAGE INTEGRATION ---
 with st.sidebar:
     st.markdown("### 🦅 NEXA ULTRA PRO")
     st.markdown("*Zia's Autonomous Trading Hub*")
     st.divider()
 
+    # Dynamic Image sync across app
     st.image(
-        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+        st.session_state.active_image,
         caption="Zia's Trading Bot Design Active",
         use_container_width=True,
     )
@@ -113,7 +116,7 @@ if menu == "📊 Live Dashboard & AI Scalper":
             "### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision"
         )
         st.image(
-            "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
+            st.session_state.active_image,
             caption="AI Neural Vision & Trading Architecture",
             use_container_width=True,
         )
@@ -193,75 +196,105 @@ elif menu == "🔐 Platform Vault & API Hub":
 elif menu == "🖼️ Custom Image Gallery & Splash":
     st.title("🖼️ Custom Image Gallery & Splash Hub")
     st.markdown(
-        "Upload and manage your app theme assets directly from your device."
+        "Upload an image here to instantly update both the **Sidebar** and **Dashboard** design across the app!"
     )
 
     uploaded_file = st.file_uploader(
-        "Upload New Gallery / Splash Image", type=["jpg", "png", "jpeg"]
+        "Upload New Main Theme Image", type=["jpg", "png", "jpeg"]
     )
     if uploaded_file is not None:
-        st.session_state.uploaded_gallery_image = uploaded_file
+        # Saving uploaded image bytes to session state so it updates everywhere
+        st.session_state.active_image = uploaded_file
         st.success(
-            "New image successfully uploaded and saved to active session!"
+            "Image updated successfully! Check the sidebar and dashboard."
         )
 
-    if st.session_state.uploaded_gallery_image is not None:
-        st.markdown("### 🖼️ Active Custom Gallery Asset:")
-        st.image(
-            st.session_state.uploaded_gallery_image,
-            caption="User Uploaded Gallery Asset",
-            use_container_width=True,
-        )
-    else:
-        st.markdown("### 🖼️ Default Theme Gallery Asset:")
-        st.image(
-            "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png",
-            caption="Default Berg Codex Design",
-            use_container_width=True,
-        )
+    st.markdown("### 🖼️ Current Active Theme Asset:")
+    st.image(
+        st.session_state.active_image,
+        caption="Active Bot Theme Asset",
+        use_container_width=True,
+    )
 
 
 # ==========================================
-# 4. VOICE ASSISTANT (HELLO ZIA & 15+ MODES)
+# 4. VOICE ASSISTANT (HELLO ZIA & MULTI-VOICE)
 # ==========================================
 elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
-    st.title("🎙️ Advanced Voice Command & Speech Studio")
+    st.title("🎙️ Advanced Voice Command & Multi-Voice Studio")
     st.markdown(
-        "Bot voice interaction panel. Click below to trigger live browser speech synthesis!"
+        "Select your preferred male/female system voice and test live speech synthesis!"
     )
 
     st.markdown(
         """
         <div class="voice-box">
-            <h3>🤖 Bot Voice Status: Active & Ready</h3>
-            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational. All 15 trading APIs are secure."</p>
+            <h3>🤖 Bot Voice Status: Active & Dynamic</h3>
+            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational. All trading nodes are secure."</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
 
-    语音Text = "Hello Zia, welcome back! Ready for trading profits today? All systems online."
-    voice_html = f"""
-    <div style="padding: 10px 0;">
-        <button onclick="speakText()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer;">
-            🔊 Speak Audio ("Hello Zia")
+    # JavaScript component to load all browser voices dynamically (Male/Female selection)
+    multi_voice_html = """
+    <div style="padding: 10px 0; background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
+        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Select Neural Voice Profile (Male / Female):</label>
+        <select id="voiceSelect" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;"></select>
+        
+        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Custom Speech Text:</label>
+        <input type="text" id="speechText" value="Hello Zia, welcome back! Ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
+        
+        <button onclick="speakWithSelectedVoice()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+            🔊 Play Selected Voice ("Hello Zia")
         </button>
     </div>
+
     <script>
-    function speakText() {{
-        if ('speechSynthesis' in window) {{
-            var text = "{语音Text}";
+    let voices = [];
+    function populateVoiceList() {
+        if(typeof speechSynthesis === 'undefined') {
+            return;
+        }
+        voices = speechSynthesis.getVoices();
+        var voiceSelect = document.getElementById('voiceSelect');
+        voiceSelect.innerHTML = '';
+        
+        for(var i = 0; i < voices.length; i++) {
+            var option = document.createElement('option');
+            option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+            if(voices[i].default) {
+                option.textContent += ' — DEFAULT';
+            }
+            option.setAttribute('data-bt-index', i);
+            voiceSelect.appendChild(option);
+        }
+    }
+
+    populateVoiceList();
+    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
+        speechSynthesis.onvoiceschanged = populateVoiceList;
+    }
+
+    function speakWithSelectedVoice() {
+        if ('speechSynthesis' in window) {
+            var text = document.getElementById('speechText').value;
             var utterance = new SpeechSynthesisUtterance(text);
+            var voiceSelect = document.getElementById('voiceSelect');
+            var selectedOptionIndex = voiceSelect.selectedOptions[0].getAttribute('data-bt-index');
+            
+            utterance.voice = voices[selectedOptionIndex];
             utterance.rate = 1.0;
             utterance.pitch = 1.0;
+            
             window.speechSynthesis.speak(utterance);
-        }} else {{
+        } else {
             alert("Speech synthesis not supported in this browser.");
-        }}
-    }}
+        }
+    }
     </script>
     """
-    components.html(voice_html, height=100)
+    components.html(multi_voice_html, height=280)
 
 
 # ==========================================
