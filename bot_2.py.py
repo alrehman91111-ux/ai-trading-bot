@@ -49,9 +49,7 @@ st.markdown(
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
 if "active_image" not in st.session_state:
-    st.session_state.active_image = (
-        "https://miro.medium.com/v2/resize:fit:1024/1*cC01HnAz0uyTxhA9jp_ZxA.png"
-    )
+    st.session_state.active_image = "https://media.istockphoto.com/id/1281292227/vector/abstract-vector-illustration-of-flying-owl.jpg?s=612x612&w=0&k=20&c=01SIIfHo6V_nt5fzkU90sJSpJbPwglJtxdH0veEGfK4="
 
 # --- TRADING PLATFORMS LIST ---
 TRADING_PLATFORMS = [
@@ -73,13 +71,24 @@ TRADING_PLATFORMS = [
     "Crypto.com",
 ]
 
-# --- SIDEBAR: DYNAMIC USER IMAGE INTEGRATION ---
+# --- SIDEBAR: SETTINGS ICON WITH COLLAPSIBLE IMAGE & CONTROLS ---
 with st.sidebar:
     st.markdown("### 🦅 NEXA ULTRA PRO")
     st.markdown("*Zia's Autonomous Trading Hub*")
     st.divider()
 
-    # Dynamic Image sync across app
+    # Settings Expandable Drawer for Image & Sidebar Customization
+    with st.expander("⚙️ Sidebar & Theme Settings", expanded=False):
+        st.markdown("#### Configure Left Panel")
+        custom_url_input = st.text_input("Paste Image URL:", value=st.session_state.active_image)
+        if st.button("Apply Image URL"):
+            st.session_state.active_image = custom_url_input
+            st.success("Sidebar asset updated!")
+        
+        sidebar_theme_mode = st.selectbox("Sidebar Theme Mode", ["Cyberpunk Dark", "Neon Blue", "Deep Obsidian"])
+        st.info(f"Active Theme: {sidebar_theme_mode}")
+
+    # Display Active Image inside Sidebar
     st.image(
         st.session_state.active_image,
         caption="Zia's Trading Bot Design Active",
@@ -106,15 +115,11 @@ with st.sidebar:
 # ==========================================
 if menu == "📊 Live Dashboard & AI Scalper":
     st.title("⚡ AI Trading Bot - Professional Dashboard")
-    st.markdown(
-        "Welcome back, **Zia**! Institutional grade algorithmic execution active."
-    )
+    st.markdown("Welcome back, **Zia**! Institutional grade algorithmic execution active.")
 
     col_img1, col_img2 = st.columns([2, 1])
     with col_img1:
-        st.markdown(
-            "### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision"
-        )
+        st.markdown("### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision")
         st.image(
             st.session_state.active_image,
             caption="AI Neural Vision & Trading Architecture",
@@ -131,12 +136,8 @@ if menu == "📊 Live Dashboard & AI Scalper":
     st.markdown("### 📈 Live Market Intelligence Stream")
     chart_data = {
         "Time": [f"12:{i}0" for i in range(10)],
-        "BTC Execution": [
-            64200 + i * 50 + (i % 2 * -25) for i in range(10)
-        ],
-        "AI Target Line": [
-            64220 + i * 52 + (i % 3 * -15) for i in range(10)
-        ],
+        "BTC Execution": [64200 + i * 50 + (i % 2 * -25) for i in range(10)],
+        "AI Target Line": [64220 + i * 52 + (i % 3 * -15) for i in range(10)],
     }
     st.line_chart(chart_data)
 
@@ -146,18 +147,10 @@ if menu == "📊 Live Dashboard & AI Scalper":
 # ==========================================
 elif menu == "🔐 Platform Vault & API Hub":
     st.title("🔐 Secure Exchange Vault & API Manager")
-    st.markdown(
-        "Unlock the Vault to connect your trading platforms with instant search."
-    )
+    st.markdown("Unlock the Vault to connect your trading platforms with instant search.")
 
-    search_query = st.text_input(
-        "🔍 Search Trading Platform (e.g., Binance, MEXC, WEEX)...", ""
-    )
-    filtered_platforms = [
-        p
-        for p in TRADING_PLATFORMS
-        if search_query.lower() in p.lower()
-    ]
+    search_query = st.text_input("🔍 Search Trading Platform (e.g., Binance, MEXC, WEEX)...", "")
+    filtered_platforms = [p for p in TRADING_PLATFORMS if search_query.lower() in p.lower()]
 
     st.markdown("### Available Trading Ecosystems")
 
@@ -165,27 +158,14 @@ elif menu == "🔐 Platform Vault & API Hub":
         with st.expander(f"💼 Configure API for: {platform}"):
             col_a, col_b = st.columns(2)
             with col_a:
-                api_key = st.text_input(
-                    f"API Key ({platform})",
-                    type="password",
-                    key=f"key_{platform}",
-                )
+                api_key = st.text_input(f"API Key ({platform})", type="password", key=f"key_{platform}")
             with col_b:
-                api_secret = st.text_input(
-                    f"Secret Key ({platform})",
-                    type="password",
-                    key=f"sec_{platform}",
-                )
+                api_secret = st.text_input(f"Secret Key ({platform})", type="password", key=f"sec_{platform}")
 
             if st.button(f"Save & Connect {platform}", key=f"btn_{platform}"):
                 if api_key and api_secret:
-                    st.session_state.api_keys[platform] = {
-                        "key": api_key,
-                        "secret": api_secret,
-                    }
-                    st.success(
-                        f"Successfully linked with {platform} securely!"
-                    )
+                    st.session_state.api_keys[platform] = {"key": api_key, "secret": api_secret}
+                    st.success(f"Successfully linked with {platform} securely!")
                 else:
                     st.warning("Please provide both API Key and Secret.")
 
@@ -195,19 +175,12 @@ elif menu == "🔐 Platform Vault & API Hub":
 # ==========================================
 elif menu == "🖼️ Custom Image Gallery & Splash":
     st.title("🖼️ Custom Image Gallery & Splash Hub")
-    st.markdown(
-        "Upload an image here to instantly update both the **Sidebar** and **Dashboard** design across the app!"
-    )
+    st.markdown("Manage and upload your app theme assets directly.")
 
-    uploaded_file = st.file_uploader(
-        "Upload New Main Theme Image", type=["jpg", "png", "jpeg"]
-    )
+    uploaded_file = st.file_uploader("Upload New Main Theme Image", type=["jpg", "png", "jpeg"])
     if uploaded_file is not None:
-        # Saving uploaded image bytes to session state so it updates everywhere
         st.session_state.active_image = uploaded_file
-        st.success(
-            "Image updated successfully! Check the sidebar and dashboard."
-        )
+        st.success("Image updated successfully across the entire platform!")
 
     st.markdown("### 🖼️ Current Active Theme Asset:")
     st.image(
@@ -222,9 +195,7 @@ elif menu == "🖼️ Custom Image Gallery & Splash":
 # ==========================================
 elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
     st.title("🎙️ Advanced Voice Command & Multi-Voice Studio")
-    st.markdown(
-        "Select your preferred male/female system voice and test live speech synthesis!"
-    )
+    st.markdown("Select your preferred male/female system voice and test live speech synthesis!")
 
     st.markdown(
         """
@@ -236,7 +207,6 @@ elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
         unsafe_allow_html=True,
     )
 
-    # JavaScript component to load all browser voices dynamically (Male/Female selection)
     multi_voice_html = """
     <div style="padding: 10px 0; background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Select Neural Voice Profile (Male / Female):</label>
@@ -304,24 +274,13 @@ elif menu == "⚙️ Auto-Learning Settings":
     st.title("⚙️ Self-Optimizing Neural Engine")
     st.markdown("Configure automated parameter tuning and self-learning weights.")
 
-    learning_rate = st.slider(
-        "Neural Adaptation Speed", 0.001, 0.1, 0.01
-    )
-    risk_tolerance = st.selectbox(
-        "Risk Profile", ["Conservative", "Balanced", "Aggressive Scalper"]
-    )
-    auto_execute = st.toggle(
-        "Enable Fully Autonomous Trade Execution", value=True
-    )
+    learning_rate = st.slider("Neural Adaptation Speed", 0.001, 0.1, 0.01)
+    risk_tolerance = st.selectbox("Risk Profile", ["Conservative", "Balanced", "Aggressive Scalper"])
+    auto_execute = st.toggle("Enable Fully Autonomous Trade Execution", value=True)
 
     if st.button("Apply Advanced Configuration"):
-        st.success(
-            f"Settings updated for Zia! Mode: {risk_tolerance} | Auto-Execute: {auto_execute}"
-        )
+        st.success(f"Settings updated for Zia! Mode: {risk_tolerance} | Auto-Execute: {auto_execute}")
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown(
-    "<p style='text-align: center; color: #64748b;'>Zia's Nexa Ultra Pro AI Trading System © 2026</p>",
-    unsafe_allow_html=True,
-)
+st.markdown("<p style='text-align: center; color: #64748b;'>Zia's Nexa Ultra Pro AI Trading System © 2026</p>", unsafe_allow_html=True)
