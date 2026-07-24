@@ -1,4 +1,3 @@
-er trading dashboard · PY
 """
 Paper Trading Dashboard (SIMULATION ONLY)
 ==========================================
