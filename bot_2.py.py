@@ -24,7 +24,7 @@ if "custom_gainers" not in st.session_state:
 if "learned_rules" not in st.session_state:
     st.session_state.learned_rules = "1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active."
 
-# --- CUSTOM CYBERPUNK STYLING & BACKGROUND IMAGE ---
+# --- CUSTOM CYBERPUNK STYLING & ANIMATIONS ---
 st.markdown(
     f"""
     <style>
@@ -53,6 +53,18 @@ st.markdown(
         padding: 15px;
         border-radius: 10px;
         margin-bottom: 15px;
+    }}
+    @keyframes pulseGlow {{
+        0% {{ border: 2px solid #374151; box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }}
+        50% {{ border: 2px solid #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }}
+        100% {{ border: 2px solid #374151; box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }}
+    }}
+    .animated-bot-frame {{
+        animation: pulseGlow 2s infinite;
+        border-radius: 15px;
+        overflow: hidden;
+        padding: 5px;
+        background: #111827;
     }}
     .neural-bg {{
         background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('{st.session_state.active_image}');
@@ -92,20 +104,11 @@ with st.sidebar:
         ]
     )
     st.markdown("---")
-    
-    st.markdown("### 🎙️ Mic & Audio Control")
-    mic_locked = st.toggle("🔒 Lock / Mute Mic (Tap to Stop/Talk)", value=False)
-    if mic_locked:
-        st.warning("Mic is Locked/Muted.")
-    else:
-        st.success("Mic is Active & Listening.")
-        
-    st.markdown("---")
     st.markdown("**System:** 🟢 Online")
 
 
 # ==========================================
-# 1. LIVE DASHBOARD & AI SCALPER
+# 1. LIVE DASHBOARD & AI SCALPER (Dashboard Mic & Talking Robot)
 # ==========================================
 if menu == "1. Live Dashboard & AI Scalper":
     st.title("Zia")
@@ -123,7 +126,42 @@ if menu == "1. Live Dashboard & AI Scalper":
         st.success("🟢 PAPER TRADING MODE ACTIVE: Safe simulation environment.")
 
     st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
+    
+    # Animated Talking / Scanning Robot Container on Dashboard
+    st.markdown('<div class="animated-bot-frame">', unsafe_allow_html=True)
     st.image(st.session_state.active_image, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    # Dashboard Mic & Voice Control directly below robot image as requested
+    st.markdown("### 🎙️ Dashboard Voice & Mic Control")
+    col_mic1, col_mic2 = st.columns([3, 1])
+    with col_mic1:
+        dash_voice_cmd = st.text_input("Speak or type command for robot:", value="Hello Zia, scan market and report PnL status.")
+    with col_mic2:
+        mic_locked = st.toggle("🔒 Mute/Lock Mic", value=False)
+
+    dashboard_voice_html = f"""
+    <div style="background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
+        <span style="color: #f8fafc; font-size: 14px;">🤖 <b>Robot Voice Status:</b> Speaking & Scanning Active</span>
+        <button onclick="playDashboardVoice()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+            🔊 Speak & Scan Now
+        </button>
+    </div>
+    <script>
+    function playDashboardVoice() {{
+        var text = "{dash_voice_cmd}";
+        if ('speechSynthesis' in window) {{
+            window.speechSynthesis.cancel();
+            var utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = "en-US";
+            utterance.pitch = 1.2;
+            window.speechSynthesis.speak(utterance);
+        }}
+        alert("Robot is scanning and speaking: " + text);
+    }}
+    </script>
+    """
+    components.html(dashboard_voice_html, height=80)
 
     st.markdown("---")
     
@@ -149,7 +187,7 @@ if menu == "1. Live Dashboard & AI Scalper":
 
 
 # ==========================================
-# 2. PLATFORM VAULT & API HUB (Binance, MEXC, Exness)
+# 2. PLATFORM VAULT & API HUB
 # ==========================================
 elif menu == "2. Platform Vault & API Hub":
     st.title("Zia")
@@ -188,11 +226,11 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & 3 LANGUAGES
+# 4. VOICE ASSISTANT & 3 LANGUAGES (5-sec sample option)
 # ==========================================
 elif menu == "4. Voice Assistant & 3 Languages":
     st.title("Zia")
-    st.markdown("Voice Assistant Studio (English, Urdu, Punjabi — Male & Female Folders)")
+    st.markdown("Voice Assistant Studio & 5-Second Voice Preview Sample")
 
     col_v1, col_v2 = st.columns(2)
     with col_v1:
@@ -212,16 +250,16 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
     multi_voice_html = f"""
     <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
-        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech ({voice_lang} / {voice_gender}):</label>
+        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
-        <button onclick="playRobustSpeech()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
-            🔊 Play Voice Audio ("Hello Zia")
+        <button onclick="play5SecSample()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+            🔊 Play 5-Sec Voice Sample
         </button>
     </div>
 
     <script>
-    function playRobustSpeech() {{
+    function play5SecSample() {{
         var text = document.getElementById('speechText').value;
         var langSel = "{voice_lang}";
         var genderSel = "{voice_gender}";
@@ -248,7 +286,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
             
             window.speechSynthesis.speak(utterance);
         }}
-        alert("Playing " + langSel + " (" + genderSel + "): " + text);
+        alert("Playing 5-Sec Voice Sample (" + langSel + "): " + text);
     }}
     </script>
     """
