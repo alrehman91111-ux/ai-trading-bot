@@ -24,56 +24,51 @@ if "custom_gainers" not in st.session_state:
 if "learned_rules" not in st.session_state:
     st.session_state.learned_rules = "1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active."
 
-# --- CUSTOM CYBERPUNK STYLING & ANIMATIONS ---
+# --- CUSTOM DRIBBBLE-INSPIRED CYBERPUNK STYLING ---
 st.markdown(
     f"""
     <style>
     .main {{
-        background-color: #0b0f19;
-        color: #e2e8f0;
+        background-color: #070913;
+        color: #f1f5f9;
         max-width: 100% !important;
     }}
     .stSidebar {{
-        background-color: #111827;
-        border-right: 1px solid #374151;
+        background-color: #0b0f19;
+        border-right: 1px solid #1e293b;
     }}
-    .metric-card {{
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        border: 1px solid #374151;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }}
-    h1, h2, h3 {{
-        color: #f8fafc;
-    }}
-    .voice-box {{
-        background: rgba(17, 24, 39, 0.85);
-        border: 1px solid #f59e0b;
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 15px;
+    .dribbble-card {{
+        background: linear-gradient(145deg, #111827 0%, #0d1322 100%);
+        border: 1px solid #1e293b;
+        border-top: 2px solid #f59e0b;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
         margin-bottom: 20px;
     }}
+    h1, h2, h3 {{
+        color: #ffffff;
+        font-weight: 700;
+    }}
     @keyframes pulseGlow {{
-        0% {{ border: 2px solid #374151; box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }}
-        50% {{ border: 2px solid #f59e0b; box-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }}
-        100% {{ border: 2px solid #374151; box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }}
+        0% {{ border: 2px solid #1e293b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.1); }}
+        50% {{ border: 2px solid #f59e0b; box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); }}
+        100% {{ border: 2px solid #1e293b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.1); }}
     }}
     .animated-bot-frame {{
-        animation: pulseGlow 2s infinite;
-        border-radius: 15px;
+        animation: pulseGlow 3s infinite;
+        border-radius: 16px;
         overflow: hidden;
-        padding: 5px;
-        background: #111827;
+        padding: 8px;
+        background: #0d1322;
     }}
     .neural-bg {{
-        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('{st.session_state.active_image}');
+        background-image: linear-gradient(rgba(7, 9, 19, 0.9), rgba(7, 9, 19, 0.9)), url('{st.session_state.active_image}');
         background-size: cover;
         background-position: center;
-        padding: 30px;
-        border-radius: 15px;
-        border: 1px solid #374151;
+        padding: 35px;
+        border-radius: 16px;
+        border: 1px solid #1e293b;
     }}
     </style>
 """,
@@ -128,12 +123,12 @@ if menu == "1. Live Dashboard & AI Scalper":
 
     st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
     
-    # Animated Talking / Scanning Robot Container on Dashboard
+    # Dribbble Style Robot Frame
     st.markdown('<div class="animated-bot-frame">', unsafe_allow_html=True)
     st.image(st.session_state.active_image, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Dashboard Mic & Voice Control directly below robot image
+    # Dashboard Mic & Voice Control Box
     st.markdown("### 🎙️ Dashboard Voice & Mic Control")
     col_mic1, col_mic2 = st.columns([3, 1])
     with col_mic1:
@@ -142,9 +137,9 @@ if menu == "1. Live Dashboard & AI Scalper":
         mic_locked = st.toggle("🔒 Mute/Lock Mic", value=False)
 
     dashboard_voice_html = f"""
-    <div style="background: rgba(30, 41, 59, 0.9); padding: 12px; border-radius: 8px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
+    <div style="background: #0d1322; padding: 16px; border-radius: 12px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
         <span style="color: #f8fafc; font-size: 14px;">🤖 <b>Robot Voice Status:</b> Speaking & Scanning Active</span>
-        <button onclick="playDashboardVoice()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">
+        <button onclick="playDashboardVoice()" style="background-color: #f59e0b; color: #070913; border: none; padding: 10px 18px; font-weight: bold; border-radius: 8px; cursor: pointer;">
             🔊 Speak & Scan Now
         </button>
     </div>
@@ -162,14 +157,14 @@ if menu == "1. Live Dashboard & AI Scalper":
     }}
     </script>
     """
-    components.html(dashboard_voice_html, height=80)
+    components.html(dashboard_voice_html, height=90)
 
     st.markdown("---")
     
     col_p1, col_p2 = st.columns([2, 1])
     with col_p1:
         st.markdown(
-            f'<div class="metric-card"><h3>{selected_token} PnL ({trading_mode.split()[0]})</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8% | Status: Synced</p></div>',
+            f'<div class="dribbble-card"><h3>{selected_token} PnL ({trading_mode.split()[0]})</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8% | Status: Synced</p></div>',
             unsafe_allow_html=True,
         )
     with col_p2:
@@ -227,14 +222,14 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & 3 LANGUAGES (With Custom Background Image Applied)
+# 4. VOICE ASSISTANT & 3 LANGUAGES (Dribbble Card Layout + Background Texture)
 # ==========================================
 elif menu == "4. Voice Assistant & 3 Languages":
     st.markdown(
         f"""
         <div class="neural-bg">
-            <h2 style="color: #f8fafc; margin-top: 0;">Zia — Voice Assistant Studio</h2>
-            <p style="color: #cbd5e1;">Configure bot voices, languages, and 5-second preview samples with live background texture.</p>
+            <h2 style="color: #ffffff; margin-top: 0;">Zia — Voice Assistant Studio</h2>
+            <p style="color: #94a3b8;">Configure bot voices, languages, and 5-second preview samples with modern crypto trading UI.</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -250,20 +245,20 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
     st.markdown(
         f"""
-        <div class="voice-box">
-            <h3 style="color: #f8fafc; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
-            <p style="color: #cbd5e1; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
+        <div class="dribbble-card">
+            <h3 style="color: #ffffff; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
+            <p style="color: #94a3b8; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
 
     multi_voice_html = f"""
-    <div style="background: rgba(17, 24, 39, 0.9); padding: 20px; border-radius: 12px; border: 1px solid #374151;">
-        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
-        <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
+    <div style="background: #0d1322; padding: 24px; border-radius: 16px; border: 1px solid #1e293b; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);">
+        <label style="color: #ffffff; font-weight: bold; display: block; margin-bottom: 10px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
+        <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 12px; border-radius: 8px; background: #111827; color: #fff; border: 1px solid #374151; margin-bottom: 18px;" />
         
-        <button onclick="play5SecSample()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+        <button onclick="play5SecSample()" style="background-color: #f59e0b; color: #070913; border: none; padding: 14px 24px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;">
             🔊 Play 5-Sec Voice Sample
         </button>
     </div>
@@ -300,7 +295,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
     }}
     </script>
     """
-    components.html(multi_voice_html, height=220)
+    components.html(multi_voice_html, height=240)
 
 
 # ==========================================
@@ -310,8 +305,8 @@ elif menu == "5. Auto-Learning & Storage Hub":
     st.markdown(
         """
         <div class="neural-bg">
-            <h2 style="color: #f8fafc; margin-top: 0;">Zia</h2>
-            <p style="color: #cbd5e1;">Auto-Learning engine with custom background photo selector & true storage tracking.</p>
+            <h2 style="color: #ffffff; margin-top: 0;">Zia</h2>
+            <p style="color: #94a3b8;">Auto-Learning engine with custom background photo selector & true storage tracking.</p>
         </div>
         """,
         unsafe_allow_html=True,
