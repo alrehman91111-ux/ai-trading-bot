@@ -48,7 +48,7 @@ st.markdown(
         color: #f8fafc;
     }}
     .voice-box {{
-        background: #111827;
+        background: rgba(17, 24, 39, 0.85);
         border: 1px solid #f59e0b;
         padding: 20px;
         border-radius: 12px;
@@ -142,7 +142,7 @@ if menu == "1. Live Dashboard & AI Scalper":
         mic_locked = st.toggle("🔒 Mute/Lock Mic", value=False)
 
     dashboard_voice_html = f"""
-    <div style="background: #1e293b; padding: 12px; border-radius: 8px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
+    <div style="background: rgba(30, 41, 59, 0.9); padding: 12px; border-radius: 8px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
         <span style="color: #f8fafc; font-size: 14px;">🤖 <b>Robot Voice Status:</b> Speaking & Scanning Active</span>
         <button onclick="playDashboardVoice()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 8px 16px; font-weight: bold; border-radius: 6px; cursor: pointer;">
             🔊 Speak & Scan Now
@@ -227,11 +227,20 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & 3 LANGUAGES (Exact UI Match as requested)
+# 4. VOICE ASSISTANT & 3 LANGUAGES (With Custom Background Image Applied)
 # ==========================================
 elif menu == "4. Voice Assistant & 3 Languages":
-    st.title("Zia")
-    st.markdown("Voice Assistant Studio & 5-Second Voice Preview Sample")
+    st.markdown(
+        f"""
+        <div class="neural-bg">
+            <h2 style="color: #f8fafc; margin-top: 0;">Zia — Voice Assistant Studio</h2>
+            <p style="color: #cbd5e1;">Configure bot voices, languages, and 5-second preview samples with live background texture.</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    st.write("")
 
     col_v1, col_v2 = st.columns(2)
     with col_v1:
@@ -250,7 +259,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
     )
 
     multi_voice_html = f"""
-    <div style="background: #111827; padding: 20px; border-radius: 12px; border: 1px solid #374151;">
+    <div style="background: rgba(17, 24, 39, 0.9); padding: 20px; border-radius: 12px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
