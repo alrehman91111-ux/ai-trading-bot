@@ -67,22 +67,14 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- TRADING PLATFORMS LIST WITH ICONS ---
+# --- STRICT TRADING PLATFORMS (Binance, MEXC, Exness Only) ---
 TRADING_PLATFORMS = [
     ("Binance", "🟡"),
     ("MEXC Global", "🔵"),
-    ("WEEX Exchange", "🟢"),
-    ("Bybit", "⚫"),
-    ("OKX", "⚪"),
-    ("KuCoin", "🟩"),
-    ("Gate.io", "🔴"),
-    ("Coinbase Pro", "🟦"),
-    ("Kraken", "🟣"),
-    ("Bitget", "🔷"),
-    ("Binance Futures", "⚡"),
+    ("Exness", "🔶"),
 ]
 
-# --- VERTICAL LEFT SIDEBAR MENU (1, 2, 3, 4, 5, 6) ---
+# --- VERTICAL LEFT SIDEBAR MENU ---
 with st.sidebar:
     st.markdown("### 🦅 ZIA")
     st.markdown("*Autonomous Suite*")
@@ -121,7 +113,7 @@ if menu == "1. Live Dashboard & AI Scalper":
 
     col_ctrl1, col_ctrl2 = st.columns(2)
     with col_ctrl1:
-        selected_token = st.selectbox("Select Token for Live Stream", ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT"])
+        selected_token = st.selectbox("Select Token for Live Stream", ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "EUR/USD"])
     with col_ctrl2:
         trading_mode = st.selectbox("Execution Mode", ["Paper Trading (Simulated / Test)", "Real Money (Live Execution API)"])
 
@@ -147,7 +139,7 @@ if menu == "1. Live Dashboard & AI Scalper":
     st.markdown("---")
     st.markdown(f"### Live Market Intelligence Stream ({selected_token})")
     
-    base_price = 60000 if "BTC" in selected_token else (3000 if "ETH" in selected_token else 150)
+    base_price = 60000 if "BTC" in selected_token else (3000 if "ETH" in selected_token else 1.08)
     chart_df = pd.DataFrame({
         f"{selected_token} Execution": [base_price + i*15 for i in range(10)],
         "AI Target Line": [base_price + i*18 for i in range(10)]
@@ -157,29 +149,26 @@ if menu == "1. Live Dashboard & AI Scalper":
 
 
 # ==========================================
-# 2. PLATFORM VAULT & API HUB
+# 2. PLATFORM VAULT & API HUB (Binance, MEXC, Exness)
 # ==========================================
 elif menu == "2. Platform Vault & API Hub":
     st.title("Zia")
-    st.markdown("Secure Exchange Vault & API Manager with official platform icons.")
+    st.markdown("Secure Exchange Vault & API Manager (Binance, MEXC, Exness).")
 
-    search_query = st.text_input("Search Trading Platform...", "")
-    filtered_platforms = [p for p in TRADING_PLATFORMS if search_query.lower() in p[0].lower()]
-
-    for platform, icon in filtered_platforms:
+    for platform, icon in TRADING_PLATFORMS:
         with st.expander(f"{icon} Configure API for: {platform}"):
             col_a, col_b = st.columns(2)
             with col_a:
-                api_key = st.text_input(f"API Key ({platform})", type="password", key=f"key_{platform}")
+                api_key = st.text_input(f"API Key / Login ({platform})", type="password", key=f"key_{platform}")
             with col_b:
-                api_secret = st.text_input(f"Secret Key ({platform})", type="password", key=f"sec_{platform}")
+                api_secret = st.text_input(f"Secret Key / Password ({platform})", type="password", key=f"sec_{platform}")
 
             if st.button(f"Save & Connect {platform}", key=f"btn_{platform}"):
                 if api_key and api_secret:
                     st.session_state.api_keys[platform] = {"key": api_key, "secret": api_secret}
                     st.success(f"Successfully linked with {platform} securely!")
                 else:
-                    st.warning("Please provide both API Key and Secret.")
+                    st.warning("Please provide both API Key/Login and Secret/Password.")
 
 
 # ==========================================
@@ -189,7 +178,6 @@ elif menu == "3. CoinMarketCap Gainer Editor":
     st.title("Zia")
     st.markdown("CoinMarketCap Gainer Token & Custom URL Editor.")
 
-    st.markdown("### Edit Gainer Tokens Manually")
     editable_gainers = st.text_area("Modify Gainer Tokens / CoinMarketCap List:", value=st.session_state.custom_gainers)
     if st.button("Save Gainer Tokens"):
         st.session_state.custom_gainers = editable_gainers
@@ -197,9 +185,6 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
     st.markdown("### Current Active Gainer List")
     st.info(st.session_state.custom_gainers)
-    
-    st.markdown("---")
-    st.write("🔗 Official Source: [CoinMarketCap Portal](https://coinmarketcap.com)")
 
 
 # ==========================================
@@ -271,7 +256,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
 
 # ==========================================
-# 5. AUTO-LEARNING & STORAGE HUB (Background & Memory)
+# 5. AUTO-LEARNING & STORAGE HUB
 # ==========================================
 elif menu == "5. Auto-Learning & Storage Hub":
     st.markdown(
@@ -286,7 +271,6 @@ elif menu == "5. Auto-Learning & Storage Hub":
     
     st.write("")
     
-    # Custom Background Photo URL / Selector restored here
     st.markdown("### 🖼️ Custom Background Photo Selector")
     bg_url_input = st.text_input("Enter Background Image URL or Select Preset:", value=st.session_state.active_image)
     if st.button("Apply Background Photo"):
@@ -326,7 +310,6 @@ elif menu == "6. 🌍 Full Market Scanner & AI Hub":
     st.title("Zia — Full Market Intelligence & Scanner")
     st.markdown("Autonomous power engine to scan the entire cryptocurrency and forex market simultaneously from A to Z.")
 
-    # A to Z Command Input Box added
     scan_command = st.text_input("💬 Enter Auto-Scan Command (e.g. 'Scan A to Z crypto & forex markets')", value="Scan A to Z crypto & forex markets")
     scan_type = st.selectbox("Select Scan Mode", ["Top Gainers & Volume Spikes (Crypto)", "Candle Wick & Liquidation Hunter", "Forex Major Pairs Intelligence"])
     
@@ -336,10 +319,10 @@ elif menu == "6. 🌍 Full Market Scanner & AI Hub":
         st.success(f"A to Z Scan completed successfully for command: '{scan_command}'!")
         
         scan_data = pd.DataFrame({
-            "Pair / Asset": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT", "EUR/USD", "GBP/USD"],
-            "Market Trend": ["Bullish Breakout", "Accumulation", "Strong Pump", "High Volatility", "Stable", "Wick Rejection", "Bullish", "Bearish"],
-            "24h Change": ["+4.5%", "+6.2%", "+12.4%", "+18.9%", "+1.2%", "+24.5%", "+0.8%", "-0.4%"],
-            "AI Signal": ["STRONG BUY", "BUY", "SCALP LONG", "BREAKOUT", "HOLD", "HIGH RISK", "LONG", "SHORT"]
+            "Pair / Asset": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "EUR/USD", "GBP/USD"],
+            "Market Trend": ["Bullish Breakout", "Accumulation", "Strong Pump", "Stable", "Bullish", "Bearish"],
+            "24h Change": ["+4.5%", "+6.2%", "+12.4%", "+1.2%", "+0.8%", "-0.4%"],
+            "AI Signal": ["STRONG BUY", "BUY", "SCALP LONG", "HOLD", "LONG", "SHORT"]
         })
         st.table(scan_data)
         st.info("💡 Bot has automatically stored high-probability A-Z setups from this scan into memory.")
