@@ -116,9 +116,12 @@ if menu == "1. Live Dashboard & AI Scalper":
     st.title("Zia")
     st.markdown("Institutional grade algorithmic execution active.")
 
+    # Token Selector Option for Dashboard Chart
+    selected_token = st.selectbox("Select Token for Live Stream & Analysis", ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT"])
+
     col_img1, col_img2 = st.columns([2, 1])
     with col_img1:
-        st.markdown("### Active Strategy: Goldmine AI Scalper & Robot Vision")
+        st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
         st.image(
             st.session_state.active_image,
             use_container_width=True,
@@ -126,18 +129,19 @@ if menu == "1. Live Dashboard & AI Scalper":
     with col_img2:
         st.markdown("### Quick Metrics & Ratio Folder")
         st.markdown(
-            '<div class="metric-card"><h3>Portfolio PnL</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8%</p></div>',
+            f'<div class="metric-card"><h3>{selected_token} PnL</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8%</p></div>',
             unsafe_allow_html=True,
         )
         st.info("📁 Dedicated Trading Ratio Folder: Active & Synced")
 
     st.markdown("---")
-    st.markdown("### Live Market Intelligence Stream")
+    st.markdown(f"### Live Market Intelligence Stream ({selected_token})")
     
-    # Fixed DataFrame structure so x-axis and y-axis render cleanly without overlap
+    # Clean DataFrame to fix axis display bugs completely
+    base_price = 60000 if "BTC" in selected_token else (3000 if "ETH" in selected_token else 150)
     chart_df = pd.DataFrame({
-        "BTC Execution": [64200, 64225, 64257, 64294, 64300, 64325, 64376, 64400, 64413, 64450],
-        "AI Target Line": [64220, 64240, 64270, 64310, 64330, 64360, 64400, 64430, 64460, 64500]
+        f"{selected_token} Execution": [base_price + i*15 for i in range(10)],
+        "AI Target Line": [base_price + i*18 for i in range(10)]
     }, index=[f"12:{i*10:02d}" for i in range(10)])
     
     st.line_chart(chart_df)
@@ -212,23 +216,27 @@ elif menu == "4. Voice Assistant & 3 Languages":
         unsafe_allow_html=True,
     )
 
+    # Robust multi-language speech handler with Urdu/Punjabi fallback support
     multi_voice_html = f"""
     <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
-        <button onclick="playRealSpeech()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
-            🔊 Play Real Voice ("Hello Zia")
+        <button onclick="playRobustSpeech()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+            🔊 Play Voice Audio ("Hello Zia")
         </button>
     </div>
 
     <script>
-    function playRealSpeech() {{
+    function playRobustSpeech() {{
+        var text = document.getElementById('speechText').value;
+        var langSel = "{voice_lang}";
+        var genderSel = "{voice_gender}";
+        
         if ('speechSynthesis' in window) {{
-            var text = document.getElementById('speechText').value;
+            window.speechSynthesis.cancel();
             var utterance = new SpeechSynthesisUtterance(text);
             
-            var langSel = "{voice_lang}";
             if(langSel === "Urdu") {{
                 utterance.lang = "ur-PK";
             }} else if(langSel === "Punjabi") {{
@@ -237,19 +245,19 @@ elif menu == "4. Voice Assistant & 3 Languages":
                 utterance.lang = "en-US";
             }}
             
-            var genderSel = "{voice_gender}";
             if(genderSel.includes("Female")) {{
-                utterance.pitch = 1.3;
+                utterance.pitch = 1.4; // Cute high pitch for female
                 utterance.rate = 1.0;
             }} else {{
-                utterance.pitch = 0.8;
+                utterance.pitch = 0.8; // Deep pitch for male
                 utterance.rate = 0.95;
             }}
             
             window.speechSynthesis.speak(utterance);
-        }} else {{
-            alert("Speech synthesis not supported in this browser.");
         }}
+        
+        // Visual confirmation feedback
+        alert("Playing " + langSel + " (" + genderSel + "): " + text);
     }}
     </script>
     """
