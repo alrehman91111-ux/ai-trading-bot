@@ -41,7 +41,7 @@ st.markdown(
         margin-bottom: 15px;
     }
     .neural-bg {
-        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('https://stockcake.com/i/cybernetic-raven-transformation_3657136_1702171');
+        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg');
         background-size: cover;
         background-position: center;
         padding: 30px;
@@ -98,7 +98,7 @@ with st.sidebar:
         sidebar_theme_mode = st.selectbox("Sidebar Theme Mode", ["Cyberpunk Dark", "Neon Blue", "Deep Obsidian"])
         st.info(f"Active Theme: {sidebar_theme_mode}")
 
-    # Display Active Image inside Sidebar (Caption Removed as requested)
+    # Display Active Image inside Sidebar (Caption Removed)
     st.image(
         st.session_state.active_image,
         use_container_width=True,
