@@ -1,5 +1,5 @@
 """
-Paper Trading Dashboard (SIMULATION ONLY)
+paper Trading Dashboard (SIMULATION ONLY)
 ==========================================
 Real live market prices are pulled from Binance's PUBLIC market-data API
 (no API key / no login needed, no real funds ever touched).
