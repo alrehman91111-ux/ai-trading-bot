@@ -24,7 +24,9 @@ if "brain_memory_gb" not in st.session_state:
 if "custom_gainers" not in st.session_state:
     st.session_state.custom_gainers = "BTC (+4.5%), ETH (+6.2%), SOL (+12.4%), WEEX (+15.0%)"
 if "learned_rules" not in st.session_state:
-    st.session_state.learned_rules = "1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active."
+    st.session_state.learned_rules = "1. Scalp on 5m candle wicks.
+2. Auto-lock profits at +3%.
+3. Dynamic risk management active."
 
 # --- CUSTOM DRIBBBLE-INSPIRED CYBERPUNK STYLING ---
 st.markdown(
@@ -132,15 +134,15 @@ if menu == "1. Live Dashboard & AI Scalper":
                 st.markdown(
                     f"""
                     <div class="dribbble-card" style="padding: 15px; text-align: center;">
-                        <h4 style="margin: 0; color: #f59e0b;">{{plat}}</h4>
-                        <h2 style="color: #10b981; margin: 5px 0;">${{bal_info['total_usdt']:,.2f}}</h2>
+                        <h4 style="margin: 0; color: #f59e0b;">{plat}</h4>
+                        <h2 style="color: #10b981; margin: 5px 0;">${bal_info['total_usdt']:,.2f}</h2>
                         <p style="font-size: 12px; color: #94a3b8; margin: 0;">Status: Live Synced</p>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
 
-    st.markdown(f"### Active Strategy: {{selected_token}} Scalper & Robot Vision")
+    st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
     
     # Dribbble Style Robot Frame
     st.markdown('<div class="animated-bot-frame">', unsafe_allow_html=True)
@@ -183,20 +185,20 @@ if menu == "1. Live Dashboard & AI Scalper":
     col_p1, col_p2 = st.columns([2, 1])
     with col_p1:
         st.markdown(
-            f'<div class="dribbble-card"><h3>{{selected_token}} PnL ({{trading_mode.split()[0]}})</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8% | Status: Synced</p></div>',
+            f'<div class="dribbble-card"><h3>{selected_token} PnL ({trading_mode.split()[0]})</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8% | Status: Synced</p></div>',
             unsafe_allow_html=True,
         )
     with col_p2:
         st.info("📁 Dedicated Trading Ratio Folder: Active & Synced")
 
     st.markdown("---")
-    st.markdown(f"### Live Market Intelligence Stream ({{selected_token}})")
+    st.markdown(f"### Live Market Intelligence Stream ({selected_token})")
     
     base_price = 60000 if "BTC" in selected_token else (3000 if "ETH" in selected_token else 1.08)
     chart_df = pd.DataFrame({
-        f"{{selected_token}} Execution": [base_price + i*15 for i in range(10)],
+        f"{selected_token} Execution": [base_price + i*15 for i in range(10)],
         "AI Target Line": [base_price + i*18 for i in range(10)]
-    }, index=[f"12:{{i*10:02d}}" for i in range(10)])
+    }, index=[f"12:{i*10:02d}" for i in range(10)])
     
     st.line_chart(chart_df)
 
@@ -209,20 +211,20 @@ elif menu == "2. Platform Vault & API Hub":
     st.markdown("Secure Exchange Vault & API Manager (Binance, MEXC, Exness). Enter your API credentials and actual account balance.")
 
     for platform, icon in TRADING_PLATFORMS:
-        with st.expander(f"{{icon}} Configure API for: {{platform}}"):
+        with st.expander(f"{icon} Configure API for: {platform}"):
             col_a, col_b = st.columns(2)
             with col_a:
-                api_key = st.text_input(f"API Key / Login ({{platform}})", type="password", key=f"key_{platform}")
+                api_key = st.text_input(f"API Key / Login ({platform})", type="password", key=f"key_{platform}")
             with col_b:
-                api_secret = st.text_input(f"Secret Key / Password ({{platform}})", type="password", key=f"sec_{platform}")
+                api_secret = st.text_input(f"Secret Key / Password ({platform})", type="password", key=f"sec_{platform}")
 
-            user_actual_balance = st.number_input(f"Enter Your Actual Live Balance ($ USDT) for {{platform}}", min_value=0.0, value=150.0, step=10.0, key=f"bal_{platform}")
+            user_actual_balance = st.number_input(f"Enter Your Actual Live Balance ($ USDT) for {platform}", min_value=0.0, value=150.0, step=10.0, key=f"bal_{platform}")
 
-            if st.button(f"Save & Connect {{platform}}", key=f"btn_{platform}"):
+            if st.button(f"Save & Connect {platform}", key=f"btn_{platform}"):
                 if api_key and api_secret:
                     st.session_state.api_keys[platform] = {"key": api_key, "secret": api_secret}
                     st.session_state.account_balances[platform] = {"total_usdt": user_actual_balance}
-                    st.success(f"Successfully linked with {{platform}}! Your Live Balance Set to: ${{user_actual_balance:,.2f} USDT")
+                    st.success(f"Successfully linked with {platform}! Your Live Balance Set to: ${user_actual_balance:,.2f} USDT")
                 else:
                     st.warning("Please provide both API Key/Login and Secret/Password.")
 
@@ -268,7 +270,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
     st.markdown(
         f"""
         <div class="dribbble-card">
-            <h3 style="color: #ffffff; margin-top: 0;">Bot Voice Status: Active ({{voice_lang}} — {{voice_gender}})</h3>
+            <h3 style="color: #ffffff; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
             <p style="color: #94a3b8; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
         </div>
     """,
@@ -277,7 +279,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
     multi_voice_html = f"""
     <div style="background: #0d1322; padding: 24px; border-radius: 16px; border: 1px solid #1e293b; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);">
-        <label style="color: #ffffff; font-weight: bold; display: block; margin-bottom: 10px;">Test Speech & 5-Sec Sample Preview ({{voice_lang}} / {{voice_gender}}):</label>
+        <label style="color: #ffffff; font-weight: bold; display: block; margin-bottom: 10px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 12px; border-radius: 8px; background: #111827; color: #fff; border: 1px solid #374151; margin-bottom: 18px;" />
         
         <button onclick="play5SecSample()" style="background-color: #f59e0b; color: #070913; border: none; padding: 14px 24px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;">
@@ -311,6 +313,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
                 utterance.rate = 0.95;
             }}
             
+            window.speechSynthesis.escaped = true;
             window.speechSynthesis.speak(utterance);
         }}
         alert("Playing 5-Sec Voice Sample (" + langSel + "): " + text);
@@ -381,7 +384,7 @@ elif menu == "6. 🌍 Full Market Scanner & AI Hub":
     if st.button("🚀 Run A to Z Full Market Scan Now"):
         with st.spinner(f"Executing command: '{scan_command}' across all A-Z pairs..."):
             time.sleep(1.5)
-        st.success(f"A to Z Scan completed successfully for command: '{scan_command}'!")
+        st.success(f"A to Z Scan completed significantly across markets.")
         
         scan_data = pd.DataFrame({
             "Pair / Asset": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "EUR/USD", "GBP/USD"],
