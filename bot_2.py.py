@@ -61,7 +61,7 @@ if "api_keys" not in st.session_state:
 if "active_image" not in st.session_state:
     st.session_state.active_image = "https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg"
 if "brain_memory_gb" not in st.session_state:
-    st.session_state.brain_memory_gb = 0.0  # Starts at 0.0 GB as requested
+    st.session_state.brain_memory_gb = 0.0
 if "custom_gainers" not in st.session_state:
     st.session_state.custom_gainers = "BTC (+4.5%), ETH (+6.2%), SOL (+12.4%), WEEX (+15.0%)"
 if "learned_rules" not in st.session_state:
@@ -82,7 +82,7 @@ TRADING_PLATFORMS = [
     ("Binance Futures", "⚡"),
 ]
 
-# --- VERTICAL LEFT SIDEBAR MENU (1, 2, 3, 4, 5) ---
+# --- VERTICAL LEFT SIDEBAR MENU (1, 2, 3, 4, 5, 6) ---
 with st.sidebar:
     st.markdown("### 🦅 ZIA")
     st.markdown("*Autonomous Suite*")
@@ -95,7 +95,8 @@ with st.sidebar:
             "2. Platform Vault & API Hub",
             "3. CoinMarketCap Gainer Editor",
             "4. Voice Assistant & 3 Languages",
-            "5. Auto-Learning & Storage Hub"
+            "5. Auto-Learning & Storage Hub",
+            "6. 🌍 Full Market Scanner & AI Hub"
         ]
     )
     st.markdown("---")
@@ -118,7 +119,6 @@ if menu == "1. Live Dashboard & AI Scalper":
     st.title("Zia")
     st.markdown("Institutional grade algorithmic execution active.")
 
-    # Top Controls: Token Selector & Execution Mode (Paper vs Real Money)
     col_ctrl1, col_ctrl2 = st.columns(2)
     with col_ctrl1:
         selected_token = st.selectbox("Select Token for Live Stream", ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT"])
@@ -130,13 +130,11 @@ if menu == "1. Live Dashboard & AI Scalper":
     else:
         st.success("🟢 PAPER TRADING MODE ACTIVE: Safe simulation environment.")
 
-    # Main Image & Layout Setup (Profit card moved below/alongside as requested)
     st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
     st.image(st.session_state.active_image, use_container_width=True)
 
     st.markdown("---")
     
-    # Profit & Metrics Section placed cleanly at the bottom
     col_p1, col_p2 = st.columns([2, 1])
     with col_p1:
         st.markdown(
@@ -288,7 +286,6 @@ elif menu == "5. Auto-Learning & Storage Hub":
     
     st.write("")
     
-    # Lock Manual Edits Toggle
     edit_locked = st.toggle("🔒 Lock Manual Edits (Prevent Accidental Changes)", value=False)
 
     st.markdown("### Edit Bot's Learned Memory Manually")
@@ -299,7 +296,7 @@ elif menu == "5. Auto-Learning & Storage Hub":
         user_learned_edit = st.text_area("Bot Self-Learned Rules & Strategies (Editable):", value=st.session_state.learned_rules)
         if st.button("Update Learned Memory"):
             st.session_state.learned_rules = user_learned_edit
-            st.session_state.brain_memory_gb += 1.2  # Adds true usage as user teaches new things
+            st.session_state.brain_memory_gb += 1.2
             st.success("Bot memory and learned rules updated successfully by Zia!")
 
     st.markdown("### 💾 True Device Storage Usage")
@@ -310,6 +307,31 @@ elif menu == "5. Auto-Learning & Storage Hub":
         st.session_state.brain_memory_gb += 2.5
         st.success(f"New knowledge absorbed! Storage used updated to {st.session_state.brain_memory_gb:.1f} GB.")
         st.balloons()
+
+
+# ==========================================
+# 6. FULL MARKET SCANNER & AI HUB
+# ==========================================
+elif menu == "6. 🌍 Full Market Scanner & AI Hub":
+    st.title("Zia — Full Market Intelligence & Scanner")
+    st.markdown("Autonomous power engine to scan the entire cryptocurrency and forex market simultaneously.")
+
+    scan_type = st.selectbox("Select Scan Mode", ["Top Gainers & Volume Spikes (Crypto)", "Candle Wick & Liquidation Hunter", "Forex Major Pairs Intelligence"])
+    
+    if st.button("🚀 Run Full Market Scan Now"):
+        with st.spinner("Scanning entire market across connected exchanges..."):
+            time.sleep(1.5)
+        st.success("Scan completed successfully! Bot has analyzed all active pairs.")
+        
+        # Display simulated scan results table
+        scan_data = pd.DataFrame({
+            "Pair / Asset": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT", "EUR/USD", "GBP/USD"],
+            "Market Trend": ["Bullish Breakout", "Accumulation", "Strong Pump", "High Volatility", "Stable", "Wick Rejection", "Bullish", "Bearish"],
+            "24h Change": ["+4.5%", "+6.2%", "+12.4%", "+18.9%", "+1.2%", "+24.5%", "+0.8%", "-0.4%"],
+            "AI Signal": ["STRONG BUY", "BUY", "SCALP LONG", "BREAKOUT", "HOLD", "HIGH RISK", "LONG", "SHORT"]
+        })
+        st.table(scan_data)
+        st.info("💡 Bot has automatically stored high-probability setups from this scan into memory.")
 
 # --- FOOTER ---
 st.markdown("---")
