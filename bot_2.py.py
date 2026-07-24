@@ -1,5 +1,6 @@
 import base64
 import time
+import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -97,7 +98,6 @@ with st.sidebar:
     )
     st.markdown("---")
     
-    # Mic Option with Lock / Mute feature right under icons
     st.markdown("### 🎙️ Mic & Audio Control")
     mic_locked = st.toggle("🔒 Lock / Mute Mic (Tap to Stop/Talk)", value=False)
     if mic_locked:
@@ -133,12 +133,14 @@ if menu == "1. Live Dashboard & AI Scalper":
 
     st.markdown("---")
     st.markdown("### Live Market Intelligence Stream")
-    chart_data = {
-        "Time": [f"12:{i}0" for i in range(10)],
-        "BTC Execution": [64200 + i * 50 + (i % 2 * -25) for i in range(10)],
-        "AI Target Line": [64220 + i * 52 + (i % 3 * -15) for i in range(10)],
-    }
-    st.line_chart(chart_data)
+    
+    # Fixed DataFrame structure so x-axis and y-axis render cleanly without overlap
+    chart_df = pd.DataFrame({
+        "BTC Execution": [64200, 64225, 64257, 64294, 64300, 64325, 64376, 64400, 64413, 64450],
+        "AI Target Line": [64220, 64240, 64270, 64310, 64330, 64360, 64400, 64430, 64460, 64500]
+    }, index=[f"12:{i*10:02d}" for i in range(10)])
+    
+    st.line_chart(chart_df)
 
 
 # ==========================================
@@ -210,7 +212,6 @@ elif menu == "4. Voice Assistant & 3 Languages":
         unsafe_allow_html=True,
     )
 
-    # Real Speech Synthesis HTML (No popup, direct voice play)
     multi_voice_html = f"""
     <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech ({voice_lang} / {voice_gender}):</label>
@@ -227,7 +228,6 @@ elif menu == "4. Voice Assistant & 3 Languages":
             var text = document.getElementById('speechText').value;
             var utterance = new SpeechSynthesisUtterance(text);
             
-            // Set language code based on selection
             var langSel = "{voice_lang}";
             if(langSel === "Urdu") {{
                 utterance.lang = "ur-PK";
@@ -237,13 +237,12 @@ elif menu == "4. Voice Assistant & 3 Languages":
                 utterance.lang = "en-US";
             }}
             
-            // Adjust pitch for cute female voice folder
             var genderSel = "{voice_gender}";
             if(genderSel.includes("Female")) {{
-                utterance.pitch = 1.3; // Cute high pitch
+                utterance.pitch = 1.3;
                 utterance.rate = 1.0;
             }} else {{
-                utterance.pitch = 0.8; // Male deep pitch
+                utterance.pitch = 0.8;
                 utterance.rate = 0.95;
             }}
             
