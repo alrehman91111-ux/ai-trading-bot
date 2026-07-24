@@ -108,7 +108,7 @@ with st.sidebar:
 
 
 # ==========================================
-# 1. LIVE DASHBOARD & AI SCALPER (Dashboard Mic & Talking Robot)
+# 1. LIVE DASHBOARD & AI SCALPER
 # ==========================================
 if menu == "1. Live Dashboard & AI Scalper":
     st.title("Zia")
@@ -132,7 +132,7 @@ if menu == "1. Live Dashboard & AI Scalper":
     st.image(st.session_state.active_image, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-    # Dashboard Mic & Voice Control directly below robot image as requested
+    # Dashboard Mic & Voice Control directly below robot image
     st.markdown("### 🎙️ Dashboard Voice & Mic Control")
     col_mic1, col_mic2 = st.columns([3, 1])
     with col_mic1:
@@ -226,7 +226,7 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & 3 LANGUAGES (5-sec sample option)
+# 4. VOICE ASSISTANT & 3 LANGUAGES (Exact Match UI layout)
 # ==========================================
 elif menu == "4. Voice Assistant & 3 Languages":
     st.title("Zia")
@@ -240,16 +240,16 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
     st.markdown(
         f"""
-        <div class="voice-box">
-            <h3>Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
-            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
+        <div style="background: #111827; border: 1px solid #f59e0b; padding: 20px; border-radius: 12px; margin-top: 15px; margin-bottom: 20px;">
+            <h3 style="color: #f8fafc; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
+            <p style="color: #cbd5e1; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
 
     multi_voice_html = f"""
-    <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
+    <div style="background: #111827; padding: 20px; border-radius: 12px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
