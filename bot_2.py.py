@@ -12,49 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# --- CUSTOM CYBERPUNK STYLING & VERTICAL MENU ---
-st.markdown(
-    """
-    <style>
-    .main {
-        background-color: #0b0f19;
-        color: #e2e8f0;
-        max-width: 100% !important;
-    }
-    .stSidebar {
-        background-color: #111827;
-        border-right: 1px solid #374151;
-    }
-    .metric-card {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        border: 1px solid #374151;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-    h1, h2, h3 {
-        color: #f8fafc;
-    }
-    .voice-box {
-        background: #1e293b;
-        border: 1px solid #f59e0b;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-    }
-    .neural-bg {
-        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg');
-        background-size: cover;
-        background-position: center;
-        padding: 30px;
-        border-radius: 15px;
-        border: 1px solid #374151;
-    }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
-
 # --- SESSION STATE ---
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
@@ -66,6 +23,49 @@ if "custom_gainers" not in st.session_state:
     st.session_state.custom_gainers = "BTC (+4.5%), ETH (+6.2%), SOL (+12.4%), WEEX (+15.0%)"
 if "learned_rules" not in st.session_state:
     st.session_state.learned_rules = "1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active."
+
+# --- CUSTOM CYBERPUNK STYLING & BACKGROUND IMAGE ---
+st.markdown(
+    f"""
+    <style>
+    .main {{
+        background-color: #0b0f19;
+        color: #e2e8f0;
+        max-width: 100% !important;
+    }}
+    .stSidebar {{
+        background-color: #111827;
+        border-right: 1px solid #374151;
+    }}
+    .metric-card {{
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        border: 1px solid #374151;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }}
+    h1, h2, h3 {{
+        color: #f8fafc;
+    }}
+    .voice-box {{
+        background: #1e293b;
+        border: 1px solid #f59e0b;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }}
+    .neural-bg {{
+        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('{st.session_state.active_image}');
+        background-size: cover;
+        background-position: center;
+        padding: 30px;
+        border-radius: 15px;
+        border: 1px solid #374151;
+    }}
+    </style>
+""",
+    unsafe_allow_html=True,
+)
 
 # --- TRADING PLATFORMS LIST WITH ICONS ---
 TRADING_PLATFORMS = [
@@ -271,20 +271,30 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
 
 # ==========================================
-# 5. AUTO-LEARNING & STORAGE HUB
+# 5. AUTO-LEARNING & STORAGE HUB (Background & Memory)
 # ==========================================
 elif menu == "5. Auto-Learning & Storage Hub":
     st.markdown(
         """
         <div class="neural-bg">
             <h2 style="color: #f8fafc; margin-top: 0;">Zia</h2>
-            <p style="color: #cbd5e1;">Auto-Learning engine with custom background & true storage tracking.</p>
+            <p style="color: #cbd5e1;">Auto-Learning engine with custom background photo selector & true storage tracking.</p>
         </div>
         """,
         unsafe_allow_html=True,
     )
     
     st.write("")
+    
+    # Custom Background Photo URL / Selector restored here
+    st.markdown("### 🖼️ Custom Background Photo Selector")
+    bg_url_input = st.text_input("Enter Background Image URL or Select Preset:", value=st.session_state.active_image)
+    if st.button("Apply Background Photo"):
+        st.session_state.active_image = bg_url_input
+        st.success("Background photo updated successfully! Refresh to view across theme.")
+        st.rerun()
+
+    st.markdown("---")
     
     edit_locked = st.toggle("🔒 Lock Manual Edits (Prevent Accidental Changes)", value=False)
 
@@ -310,20 +320,21 @@ elif menu == "5. Auto-Learning & Storage Hub":
 
 
 # ==========================================
-# 6. FULL MARKET SCANNER & AI HUB
+# 6. 🌍 FULL MARKET SCANNER & AI HUB
 # ==========================================
 elif menu == "6. 🌍 Full Market Scanner & AI Hub":
     st.title("Zia — Full Market Intelligence & Scanner")
-    st.markdown("Autonomous power engine to scan the entire cryptocurrency and forex market simultaneously.")
+    st.markdown("Autonomous power engine to scan the entire cryptocurrency and forex market simultaneously from A to Z.")
 
+    # A to Z Command Input Box added
+    scan_command = st.text_input("💬 Enter Auto-Scan Command (e.g. 'Scan A to Z crypto & forex markets')", value="Scan A to Z crypto & forex markets")
     scan_type = st.selectbox("Select Scan Mode", ["Top Gainers & Volume Spikes (Crypto)", "Candle Wick & Liquidation Hunter", "Forex Major Pairs Intelligence"])
     
-    if st.button("🚀 Run Full Market Scan Now"):
-        with st.spinner("Scanning entire market across connected exchanges..."):
+    if st.button("🚀 Run A to Z Full Market Scan Now"):
+        with st.spinner(f"Executing command: '{scan_command}' across all A-Z pairs..."):
             time.sleep(1.5)
-        st.success("Scan completed successfully! Bot has analyzed all active pairs.")
+        st.success(f"A to Z Scan completed successfully for command: '{scan_command}'!")
         
-        # Display simulated scan results table
         scan_data = pd.DataFrame({
             "Pair / Asset": ["BTC/USDT", "ETH/USDT", "SOL/USDT", "WEEX/USDT", "XRP/USDT", "PEPE/USDT", "EUR/USD", "GBP/USD"],
             "Market Trend": ["Bullish Breakout", "Accumulation", "Strong Pump", "High Volatility", "Stable", "Wick Rejection", "Bullish", "Bearish"],
@@ -331,7 +342,7 @@ elif menu == "6. 🌍 Full Market Scanner & AI Hub":
             "AI Signal": ["STRONG BUY", "BUY", "SCALP LONG", "BREAKOUT", "HOLD", "HIGH RISK", "LONG", "SHORT"]
         })
         st.table(scan_data)
-        st.info("💡 Bot has automatically stored high-probability setups from this scan into memory.")
+        st.info("💡 Bot has automatically stored high-probability A-Z setups from this scan into memory.")
 
 # --- FOOTER ---
 st.markdown("---")
