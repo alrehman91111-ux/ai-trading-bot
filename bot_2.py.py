@@ -40,6 +40,14 @@ st.markdown(
         border-radius: 10px;
         margin-bottom: 15px;
     }
+    .neural-bg {
+        background-image: linear-gradient(rgba(11, 15, 25, 0.85), rgba(11, 15, 25, 0.85)), url('https://stockcake.com/i/cybernetic-raven-transformation_3657136_1702171');
+        background-size: cover;
+        background-position: center;
+        padding: 30px;
+        border-radius: 15px;
+        border: 1px solid #374151;
+    }
     </style>
 """,
     unsafe_allow_html=True,
@@ -50,6 +58,8 @@ if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
 if "active_image" not in st.session_state:
     st.session_state.active_image = "https://media.istockphoto.com/id/1281292227/vector/abstract-vector-illustration-of-flying-owl.jpg?s=612x612&w=0&k=20&c=01SIIfHo6V_nt5fzkU90sJSpJbPwglJtxdH0veEGfK4="
+if "brain_memory" not in st.session_state:
+    st.session_state.brain_memory = 45  # Starting human-like memory score (%)
 
 # --- TRADING PLATFORMS LIST ---
 TRADING_PLATFORMS = [
@@ -88,10 +98,9 @@ with st.sidebar:
         sidebar_theme_mode = st.selectbox("Sidebar Theme Mode", ["Cyberpunk Dark", "Neon Blue", "Deep Obsidian"])
         st.info(f"Active Theme: {sidebar_theme_mode}")
 
-    # Display Active Image inside Sidebar
+    # Display Active Image inside Sidebar (Caption Removed as requested)
     st.image(
         st.session_state.active_image,
-        caption="Zia's Trading Bot Design Active",
         use_container_width=True,
     )
 
@@ -268,18 +277,34 @@ elif menu == "🎙️ Voice Assistant (Hello Zia & 15+ Modes)":
 
 
 # ==========================================
-# 5. AUTO-LEARNING SETTINGS
+# 5. AUTO-LEARNING SETTINGS (HUMAN BRAIN MEMORY SYSTEM)
 # ==========================================
 elif menu == "⚙️ Auto-Learning Settings":
-    st.title("⚙️ Self-Optimizing Neural Engine")
-    st.markdown("Configure automated parameter tuning and self-learning weights.")
-
+    st.markdown(
+        """
+        <div class="neural-bg">
+            <h2 style="color: #f8fafc; margin-top: 0;">🧠 Self-Optimizing Neural Engine & Brain Memory</h2>
+            <p style="color: #cbd5e1;">Just like a human brain, this bot learns from your inputs. As you train, adjust parameters, and feed strategies, its neural memory expands recursively!</p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    st.write("")
     learning_rate = st.slider("Neural Adaptation Speed", 0.001, 0.1, 0.01)
     risk_tolerance = st.selectbox("Risk Profile", ["Conservative", "Balanced", "Aggressive Scalper"])
     auto_execute = st.toggle("Enable Fully Autonomous Trade Execution", value=True)
 
-    if st.button("Apply Advanced Configuration"):
-        st.success(f"Settings updated for Zia! Mode: {risk_tolerance} | Auto-Execute: {auto_execute}")
+    # Human Brain Memory Progress Bar
+    st.markdown("### 🧬 Bot's Cognitive Memory & Evolution Level")
+    st.progress(st.session_state.brain_memory / 100, text=f"Brain Memory Capacity: {st.session_state.brain_memory}% (Growing with Zia's Input)")
+
+    if st.button("Apply Advanced Configuration & Absorb Knowledge"):
+        # Increase brain memory dynamically with each training click (up to 100%)
+        if st.session_state.brain_memory < 98:
+            st.session_state.brain_memory += 7
+        st.success(f"Configuration synchronized, Zia! Brain memory upgraded to {st.session_state.brain_memory}%. Mode: {risk_tolerance}")
+        st.balloons()
 
 # --- FOOTER ---
 st.markdown("---")
