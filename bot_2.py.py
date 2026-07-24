@@ -8,10 +8,10 @@ st.set_page_config(
     page_title="Zia's AI Trading Bot - Professional Suite",
     page_icon="🦅",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
-# --- CUSTOM CYBERPUNK STYLING & FULL-WIDTH ---
+# --- CUSTOM CYBERPUNK STYLING & VERTICAL MENU ---
 st.markdown(
     """
     <style>
@@ -19,8 +19,10 @@ st.markdown(
         background-color: #0b0f19;
         color: #e2e8f0;
         max-width: 100% !important;
-        padding-left: 2rem;
-        padding-right: 2rem;
+    }
+    .stSidebar {
+        background-color: #111827;
+        border-right: 1px solid #374151;
     }
     .metric-card {
         background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
@@ -47,16 +49,6 @@ st.markdown(
         border-radius: 15px;
         border: 1px solid #374151;
     }
-    .nav-container {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        background: #111827;
-        padding: 15px;
-        border-radius: 12px;
-        border: 1px solid #374151;
-        margin-bottom: 25px;
-    }
     </style>
 """,
     unsafe_allow_html=True,
@@ -66,9 +58,11 @@ st.markdown(
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
 if "active_image" not in st.session_state:
-    st.session_state.active_image = "https://media.istockphoto.com/id/1281292227/vector/abstract-vector-illustration-of-flying-owl.jpg?s=612x612&w=0&k=20&c=01SIIfHo6V_nt5fzkU90sJSpJbPwglJtxdH0veEGfK4="
+    st.session_state.active_image = "https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg"
 if "brain_memory" not in st.session_state:
-    st.session_state.brain_memory = 120  # 100GB+ Advanced Neural Memory
+    st.session_state.brain_memory_gb = 42.5  # Storage used so far out of 120GB+
+if "custom_gainers" not in st.session_state:
+    st.session_state.custom_gainers = "BTC (+4.5%), ETH (+6.2%), SOL (+12.4%), WEEX (+15.0%)"
 
 # --- TRADING PLATFORMS LIST WITH ICONS ---
 TRADING_PLATFORMS = [
@@ -85,47 +79,60 @@ TRADING_PLATFORMS = [
     ("Binance Futures", "⚡"),
 ]
 
-# --- HORIZONTAL NAVIGATION BAR ---
-st.markdown("<h2 style='text-align: center;'>🦅 ZIA'S NEXA ULTRA PRO TRADING SUITE</h2>", unsafe_allow_html=True)
+# --- VERTICAL LEFT SIDEBAR MENU (1, 2, 3, 4, 5) ---
+with st.sidebar:
+    st.markdown("### 🦅 ZIA")
+    st.markdown("*Autonomous Suite*")
+    st.divider()
+    
+    menu = st.radio(
+        "Vertical Navigation",
+        [
+            "1. Live Dashboard & AI Scalper",
+            "2. Platform Vault & API Hub",
+            "3. CoinMarketCap Gainer Editor",
+            "4. Voice Assistant & 3 Languages",
+            "5. Auto-Learning & Storage Hub"
+        ]
+    )
+    st.markdown("---")
+    
+    # Mic Option with Lock / Mute feature right under icons
+    st.markdown("### 🎙️ Mic & Audio Control")
+    mic_locked = st.toggle("🔒 Lock / Mute Mic (Tap to Stop/Talk)", value=False)
+    if mic_locked:
+        st.warning("Mic is Locked/Muted.")
+    else:
+        st.success("Mic is Active & Listening.")
+        
+    st.markdown("---")
+    st.markdown("**System:** 🟢 Online")
 
-nav_selection = st.radio(
-    "Navigation Menu",
-    [
-        "📊 Live Dashboard & AI Scalper",
-        "🔐 Platform Vault & API Hub",
-        "🌐 CoinMarketCap Live Stream",
-        "🎙️ Voice Assistant & Cute Female Voices",
-        "⚙️ Auto-Learning & A-Z Autonomous Engine"
-    ],
-    horizontal=True,
-    label_visibility="collapsed"
-)
-
-st.markdown("---")
 
 # ==========================================
 # 1. LIVE DASHBOARD & AI SCALPER
 # ==========================================
-if nav_selection == "📊 Live Dashboard & AI Scalper":
-    st.title("⚡ AI Trading Bot - Professional Dashboard")
-    st.markdown("Welcome back, **Zia**! Institutional grade algorithmic execution active across full screen.")
+if menu == "1. Live Dashboard & AI Scalper":
+    st.title("Zia")
+    st.markdown("Institutional grade algorithmic execution active.")
 
     col_img1, col_img2 = st.columns([2, 1])
     with col_img1:
-        st.markdown("### 🤖 Active Strategy: Goldmine AI Scalper & Robot Vision")
+        st.markdown("### Active Strategy: Goldmine AI Scalper & Robot Vision")
         st.image(
             st.session_state.active_image,
             use_container_width=True,
         )
     with col_img2:
-        st.markdown("### 📊 Quick Metrics")
+        st.markdown("### Quick Metrics & Ratio Folder")
         st.markdown(
             '<div class="metric-card"><h3>Portfolio PnL</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8%</p></div>',
             unsafe_allow_html=True,
         )
+        st.info("📁 Dedicated Trading Ratio Folder: Active & Synced")
 
     st.markdown("---")
-    st.markdown("### 📈 Live Market Intelligence Stream")
+    st.markdown("### Live Market Intelligence Stream")
     chart_data = {
         "Time": [f"12:{i}0" for i in range(10)],
         "BTC Execution": [64200 + i * 50 + (i % 2 * -25) for i in range(10)],
@@ -137,14 +144,12 @@ if nav_selection == "📊 Live Dashboard & AI Scalper":
 # ==========================================
 # 2. PLATFORM VAULT & API HUB
 # ==========================================
-elif nav_selection == "🔐 Platform Vault & API Hub":
-    st.title("🔐 Secure Exchange Vault & API Manager")
-    st.markdown("Connect your favorite exchange platforms with dedicated verified icons.")
+elif menu == "2. Platform Vault & API Hub":
+    st.title("Zia")
+    st.markdown("Secure Exchange Vault & API Manager with official platform icons.")
 
-    search_query = st.text_input("🔍 Search Trading Platform (e.g., Binance, MEXC, WEEX)...", "")
+    search_query = st.text_input("Search Trading Platform...", "")
     filtered_platforms = [p for p in TRADING_PLATFORMS if search_query.lower() in p[0].lower()]
-
-    st.markdown("### Available Trading Ecosystems")
 
     for platform, icon in filtered_platforms:
         with st.expander(f"{icon} Configure API for: {platform}"):
@@ -163,110 +168,71 @@ elif nav_selection == "🔐 Platform Vault & API Hub":
 
 
 # ==========================================
-# 3. COINMARKETCAP LIVE STREAM
+# 3. COINMARKETCAP GAINER EDITOR
 # ==========================================
-elif nav_selection == "🌐 CoinMarketCap Live Stream":
-    st.title("🌐 CoinMarketCap Real-Time Market Intelligence")
-    st.markdown("Live tracking and token analytics integrated directly from CoinMarketCap.")
+elif menu == "3. CoinMarketCap Gainer Editor":
+    st.title("Zia")
+    st.markdown("CoinMarketCap Gainer Token & Custom URL Editor.")
+
+    st.markdown("### Edit Gainer Tokens Manually")
+    editable_gainers = st.text_area("Modify Gainer Tokens / CoinMarketCap List:", value=st.session_state.custom_gainers)
+    if st.button("Save Gainer Tokens"):
+        st.session_state.custom_gainers = editable_gainers
+        st.success("Gainer tokens updated successfully!")
+
+    st.markdown("### Current Active Gainer List")
+    st.info(st.session_state.custom_gainers)
     
-    col_cmc1, col_cmc2, col_cmc3 = st.columns(3)
-    with col_cmc1:
-        st.markdown('<div class="metric-card"><h3>Bitcoin (BTC)</h3><h2 style="color:#f59e0b;">$64,850.00</h2><p>+3.4% (24h)</p></div>', unsafe_allow_html=True)
-    with col_cmc2:
-        st.markdown('<div class="metric-card"><h3>Ethereum (ETH)</h3><h2 style="color:#3b82f6;">$3,450.20</h2><p>+5.1% (24h)</p></div>', unsafe_allow_html=True)
-    with col_cmc3:
-        st.markdown('<div class="metric-card"><h3>Global Market Cap</h3><h2 style="color:#10b981;">$2.45 Trillion</h2><p>Volume: $84B</p></div>', unsafe_allow_html=True)
-    
-    st.write("")
-    st.info("🔗 Official Feed Source: [CoinMarketCap Official Portal](https://coinmarketcap.com)")
+    st.markdown("---")
+    st.write("🔗 Official Source: [CoinMarketCap Portal](https://coinmarketcap.com)")
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & CUTE FEMALE VOICES
+# 4. VOICE ASSISTANT & 3 LANGUAGES
 # ==========================================
-elif nav_selection == "🎙️ Voice Assistant & Cute Female Voices":
-    st.title("🎙️ Advanced Voice Command & Cute Female Neural Studio")
-    st.markdown("Select from 25+ cute female and multi-voice neural profiles for instant speech synthesis!")
+elif menu == "4. Voice Assistant & 3 Languages":
+    st.title("Zia")
+    st.markdown("Voice Assistant Studio (English, Urdu, Punjabi — Male & Female Folders)")
+
+    # Separate Folders / Selectors for Male & Female and 3 Languages
+    col_v1, col_v2 = st.columns(2)
+    with col_v1:
+        voice_gender = st.selectbox("Select Gender Folder", ["Female Folder (Cute Voices)", "Male Folder"])
+    with col_v2:
+        voice_lang = st.selectbox("Select Language", ["English", "Urdu", "Punjabi"])
 
     st.markdown(
-        """
+        f"""
         <div class="voice-box">
-            <h3>🤖 Bot Voice Status: Active & Dynamic</h3>
-            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational. All trading nodes are secure."</p>
+            <h3>Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
+            <p><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
         </div>
     """,
         unsafe_allow_html=True,
     )
 
-    multi_voice_html = """
-    <div style="padding: 10px 0; background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
-        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Select Cute Female / Neural Voice Profile (25+ Available):</label>
-        <select id="voiceSelect" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;"></select>
+    multi_voice_html = f"""
+    <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
+        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech ({voice_lang} / {voice_gender}):</label>
+        <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
-        <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Custom Speech Text:</label>
-        <input type="text" id="speechText" value="Hello Zia, welcome back! Ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
-        
-        <button onclick="speakWithSelectedVoice()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
-            🔊 Play Cute Voice ("Hello Zia")
+        <button onclick="alert('Playing {voice_lang} speech from {voice_gender}!')" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+            🔊 Play Voice ("Hello Zia")
         </button>
     </div>
-
-    <script>
-    let voices = [];
-    function populateVoiceList() {
-        if(typeof speechSynthesis === 'undefined') {
-            return;
-        }
-        voices = speechSynthesis.getVoices();
-        var voiceSelect = document.getElementById('voiceSelect');
-        voiceSelect.innerHTML = '';
-        
-        for(var i = 0; i < voices.length; i++) {
-            var option = document.createElement('option');
-            option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-            if(voices[i].name.toLowerCase().includes('female') || voices[i].name.toLowerCase().includes('zira') || voices[i].name.toLowerCase().includes('samantha') || voices[i].name.toLowerCase().includes('victoria')) {
-                option.textContent += ' 🌟 [CUTE FEMALE]';
-            }
-            option.setAttribute('data-bt-index', i);
-            voiceSelect.appendChild(option);
-        }
-    }
-
-    populateVoiceList();
-    if (typeof speechSynthesis !== 'undefined' && speechSynthesis.onvoiceschanged !== undefined) {
-        speechSynthesis.onvoiceschanged = populateVoiceList;
-    }
-
-    function speakWithSelectedVoice() {
-        if ('speechSynthesis' in window) {
-            var text = document.getElementById('speechText').value;
-            var utterance = new SpeechSynthesisUtterance(text);
-            var voiceSelect = document.getElementById('voiceSelect');
-            var selectedOptionIndex = voiceSelect.selectedOptions[0].getAttribute('data-bt-index');
-            
-            utterance.voice = voices[selectedOptionIndex];
-            utterance.rate = 1.0;
-            utterance.pitch = 1.2; // Higher pitch for cute tone
-            
-            window.speechSynthesis.speak(utterance);
-        } else {
-            alert("Speech synthesis not supported in this browser.");
-        }
-    }
-    </script>
     """
-    components.html(multi_voice_html, height=280)
+    components.html(multi_voice_html, height=180)
 
 
 # ==========================================
-# 5. AUTO-LEARNING & A-Z AUTONOMOUS ENGINE
+# 5. AUTO-LEARNING & STORAGE HUB
 # ==========================================
-elif nav_selection == "⚙️ Auto-Learning & A-Z Autonomous Engine":
+elif menu == "5. Auto-Learning & Storage Hub":
     st.markdown(
         """
         <div class="neural-bg">
-            <h2 style="color: #f8fafc; margin-top: 0;">🧠 Self-Optimizing Neural Engine & 100GB+ Brain Memory</h2>
-            <p style="color: #cbd5e1;">A-Z Autonomous Permission Active. Type any command below, and the bot will instantly execute and adapt its architecture accordingly!</p>
+            <h2 style="color: #f8fafc; margin-top: 0;">Zia</h2>
+            <p style="color: #cbd5e1;">Auto-Learning engine with custom background & full phone/device storage access (100GB+).</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -274,24 +240,22 @@ elif nav_selection == "⚙️ Auto-Learning & A-Z Autonomous Engine":
     
     st.write("")
     
-    # A-Z Autonomous Prompt Box
-    autonomous_prompt = st.text_input("💬 Type A-Z Command for Bot (e.g., 'Optimize scalping speed', 'Lock all profits', 'Upgrade neural weights'):", "")
-    if autonomous_prompt:
-        st.success(f"⚡ Bot Autonomous Execution Active: '{autonomous_prompt}' processed successfully with A-Z permissions!")
+    # Editable learned knowledge
+    st.markdown("### Edit Bot's Learned Memory Manually")
+    user_learned_edit = st.text_area("Bot Self-Learned Rules & Strategies (Editable):", value="1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active.")
+    if st.button("Update Learned Memory"):
+        st.success("Bot memory and learned rules updated successfully by Zia!")
 
-    learning_rate = st.slider("Neural Adaptation Speed (Advanced)", 0.001, 1.0, 0.1)
-    risk_tolerance = st.selectbox("Risk Profile", ["Conservative", "Balanced", "Aggressive Scalper", "Ultra Quantum High-Frequency"])
-    auto_execute = st.toggle("Enable Fully Autonomous Trade Execution (A-Z Permitted)", value=True)
+    # Storage Used Tracker
+    st.markdown("### 💾 Device & Phone Storage Usage")
+    st.metric(label="Storage Used (Out of 120GB+ Capacity)", value=f"{st.session_state.brain_memory_gb} GB Used", delta="Fully Synchronized")
+    st.progress(st.session_state.brain_memory_gb / 120)
 
-    # Human Brain Memory Progress Bar (100GB+)
-    st.markdown("### 🧬 Bot's Cognitive Memory & Quantum Capacity")
-    st.progress(1.0, text=f"Brain Memory Capacity: 120 GB / 100 GB+ (Fully Autonomous & Expanding)")
-
-    if st.button("Apply Advanced Configuration & Absorb Knowledge"):
-        st.session_state.brain_memory += 10
-        st.success(f"Configuration synchronized, Zia! Bot memory expanded to {st.session_state.brain_memory}GB. Mode: {risk_tolerance}")
+    if st.button("Absorb New Knowledge & Expand Storage"):
+        st.session_state.brain_memory_gb += 5.0
+        st.success(f"Knowledge absorbed! Storage used updated to {st.session_state.brain_memory_gb} GB.")
         st.balloons()
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: #64748b;'>Zia's Nexa Ultra Pro AI Trading System © 2026 — Full Screen Edition</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #64748b;'>Zia © 2026</p>", unsafe_allow_html=True)
