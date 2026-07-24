@@ -59,8 +59,8 @@ if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
 if "active_image" not in st.session_state:
     st.session_state.active_image = "https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg"
-if "brain_memory" not in st.session_state:
-    st.session_state.brain_memory_gb = 42.5  # Storage used so far out of 120GB+
+if "brain_memory_gb" not in st.session_state:
+    st.session_state.brain_memory_gb = 42.5
 if "custom_gainers" not in st.session_state:
     st.session_state.custom_gainers = "BTC (+4.5%), ETH (+6.2%), SOL (+12.4%), WEEX (+15.0%)"
 
@@ -194,7 +194,6 @@ elif menu == "4. Voice Assistant & 3 Languages":
     st.title("Zia")
     st.markdown("Voice Assistant Studio (English, Urdu, Punjabi — Male & Female Folders)")
 
-    # Separate Folders / Selectors for Male & Female and 3 Languages
     col_v1, col_v2 = st.columns(2)
     with col_v1:
         voice_gender = st.selectbox("Select Gender Folder", ["Female Folder (Cute Voices)", "Male Folder"])
@@ -211,17 +210,51 @@ elif menu == "4. Voice Assistant & 3 Languages":
         unsafe_allow_html=True,
     )
 
+    # Real Speech Synthesis HTML (No popup, direct voice play)
     multi_voice_html = f"""
     <div style="background: #111827; padding: 20px; border-radius: 10px; border: 1px solid #374151;">
         <label style="color: #f8fafc; font-weight: bold; display: block; margin-bottom: 8px;">Test Speech ({voice_lang} / {voice_gender}):</label>
         <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 10px; border-radius: 6px; background: #1f2937; color: #fff; border: 1px solid #4b5563; margin-bottom: 15px;" />
         
-        <button onclick="alert('Playing {voice_lang} speech from {voice_gender}!')" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
-            🔊 Play Voice ("Hello Zia")
+        <button onclick="playRealSpeech()" style="background-color: #f59e0b; color: #0b0f19; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%;">
+            🔊 Play Real Voice ("Hello Zia")
         </button>
     </div>
+
+    <script>
+    function playRealSpeech() {{
+        if ('speechSynthesis' in window) {{
+            var text = document.getElementById('speechText').value;
+            var utterance = new SpeechSynthesisUtterance(text);
+            
+            // Set language code based on selection
+            var langSel = "{voice_lang}";
+            if(langSel === "Urdu") {{
+                utterance.lang = "ur-PK";
+            }} else if(langSel === "Punjabi") {{
+                utterance.lang = "pa-IN";
+            }} else {{
+                utterance.lang = "en-US";
+            }}
+            
+            // Adjust pitch for cute female voice folder
+            var genderSel = "{voice_gender}";
+            if(genderSel.includes("Female")) {{
+                utterance.pitch = 1.3; // Cute high pitch
+                utterance.rate = 1.0;
+            }} else {{
+                utterance.pitch = 0.8; // Male deep pitch
+                utterance.rate = 0.95;
+            }}
+            
+            window.speechSynthesis.speak(utterance);
+        }} else {{
+            alert("Speech synthesis not supported in this browser.");
+        }}
+    }}
+    </script>
     """
-    components.html(multi_voice_html, height=180)
+    components.html(multi_voice_html, height=220)
 
 
 # ==========================================
@@ -240,13 +273,11 @@ elif menu == "5. Auto-Learning & Storage Hub":
     
     st.write("")
     
-    # Editable learned knowledge
     st.markdown("### Edit Bot's Learned Memory Manually")
     user_learned_edit = st.text_area("Bot Self-Learned Rules & Strategies (Editable):", value="1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active.")
     if st.button("Update Learned Memory"):
         st.success("Bot memory and learned rules updated successfully by Zia!")
 
-    # Storage Used Tracker
     st.markdown("### 💾 Device & Phone Storage Usage")
     st.metric(label="Storage Used (Out of 120GB+ Capacity)", value=f"{st.session_state.brain_memory_gb} GB Used", delta="Fully Synchronized")
     st.progress(st.session_state.brain_memory_gb / 120)
