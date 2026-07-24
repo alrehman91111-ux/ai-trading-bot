@@ -48,11 +48,12 @@ st.markdown(
         color: #f8fafc;
     }}
     .voice-box {{
-        background: #1e293b;
+        background: #111827;
         border: 1px solid #f59e0b;
-        padding: 15px;
-        border-radius: 10px;
-        margin-bottom: 15px;
+        padding: 20px;
+        border-radius: 12px;
+        margin-top: 15px;
+        margin-bottom: 20px;
     }}
     @keyframes pulseGlow {{
         0% {{ border: 2px solid #374151; box-shadow: 0 0 5px rgba(245, 158, 11, 0.2); }}
@@ -226,7 +227,7 @@ elif menu == "3. CoinMarketCap Gainer Editor":
 
 
 # ==========================================
-# 4. VOICE ASSISTANT & 3 LANGUAGES (Exact Match UI layout)
+# 4. VOICE ASSISTANT & 3 LANGUAGES (Exact UI Match as requested)
 # ==========================================
 elif menu == "4. Voice Assistant & 3 Languages":
     st.title("Zia")
@@ -240,7 +241,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
 
     st.markdown(
         f"""
-        <div style="background: #111827; border: 1px solid #f59e0b; padding: 20px; border-radius: 12px; margin-top: 15px; margin-bottom: 20px;">
+        <div class="voice-box">
             <h3 style="color: #f8fafc; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
             <p style="color: #cbd5e1; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
         </div>
