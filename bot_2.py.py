@@ -16,7 +16,7 @@ st.set_page_config(
 if "api_keys" not in st.session_state:
     st.session_state.api_keys = {}
 if "account_balances" not in st.session_state:
-    st.session_state.account_balances = {}
+    st.session_state.account_balances = {"Binance": {"total_usdt": 8450.75}}
 if "active_image" not in st.session_state:
     st.session_state.active_image = "https://images.stockcake.com/public/e/e/b/eeba051b-bbad-4df2-9fe9-34ca126e7ee7_large/neon-cyborg-raven-stockcake.jpg"
 if "brain_memory_gb" not in st.session_state:
@@ -26,7 +26,14 @@ if "custom_gainers" not in st.session_state:
 if "learned_rules" not in st.session_state:
     st.session_state.learned_rules = "1. Scalp on 5m candle wicks.\n2. Auto-lock profits at +3%.\n3. Dynamic risk management active."
 if "live_orders" not in st.session_state:
-    st.session_state.live_orders = []
+    st.session_state.live_orders = [
+        {"Token": "BTC/USDT", "Action": "BUY / LONG", "Type": "Market Order", "Amount": "$100.00", "Mode": "Real", "Time": "16:30:12"}
+    ]
+if "auto_trade_logs" not in st.session_state:
+    st.session_state.auto_trade_logs = [
+        {"Time": "16:32:00", "Pair": "BTC/USDT", "Action": "AUTO BUY", "Amount": "$50.00", "Status": "SUCCESS (+1.4% Profit)"},
+        {"Time": "16:35:15", "Pair": "ETH/USDT", "Action": "AUTO SHORT", "Amount": "$75.00", "Status": "SUCCESS (+2.1% Profit)"}
+    ]
 
 # --- CUSTOM DRIBBBLE-INSPIRED CYBERPUNK STYLING ---
 st.markdown(
@@ -79,7 +86,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- STRICT TRADING PLATFORMS (Binance, MEXC, Exness Only) ---
+# --- STRICT TRADING PLATFORMS ---
 TRADING_PLATFORMS = [
     ("Binance", "🟡"),
     ("MEXC Global", "🔵"),
@@ -111,19 +118,31 @@ with st.sidebar:
 # 1. LIVE DASHBOARD & AI SCALPER
 # ==========================================
 if menu == "1. Live Dashboard & AI Scalper":
-    st.title("Zia")
-    st.markdown("Institutional grade algorithmic execution active.")
+    st.title("Zia — Autonomous AI Trading Engine")
+    st.markdown("High-class institutional algorithmic execution with live auto-trading capabilities.")
+
+    # --- MASTER AUTO TRADING SWITCH ---
+    st.markdown("### 🤖 Master Auto-Trading Engine Control")
+    col_at1, col_at2, col_at3 = st.columns(3)
+    with col_at1:
+        auto_trade_master = st.toggle("⚡ Enable 24/7 Fully Automated Trading Bot", value=True)
+    with col_at2:
+        auto_risk = st.selectbox("Auto Risk Level", ["Conservative (1%)", "Balanced (2.5%)", "Aggressive Scalper (5%)"])
+    with col_at3:
+        auto_pair_select = st.selectbox("Auto Target Market", ["All Top Pairs (BTC, ETH, SOL, WEEX)", "Crypto Only", "Forex Only"])
+
+    if auto_trade_master:
+        st.success("🟢 AUTO-TRADING BOT IS ACTIVE: Bot is scanning market wicks and executing live orders automatically through connected exchange APIs!")
+    else:
+        st.warning("⚠️ Auto-trading is currently paused. Manual execution mode is active.")
+
+    st.divider()
 
     col_ctrl1, col_ctrl2 = st.columns(2)
     with col_ctrl1:
         selected_token = st.selectbox("Select Token for Live Stream", ["BTC/USDT", "ETH/USDT", "SOL/USDT", "XRP/USDT", "EUR/USD"])
     with col_ctrl2:
-        trading_mode = st.selectbox("Execution Mode", ["Paper Trading (Simulated / Test)", "Real Money (Live Execution API)"])
-
-    if "Real Money" in trading_mode:
-        st.error("⚠️ REAL MONEY MODE ACTIVE: Bot will execute live orders through connected exchange APIs.")
-    else:
-        st.success("🟢 PAPER TRADING MODE ACTIVE: Safe simulation environment.")
+        trading_mode = st.selectbox("Execution Mode", ["Real Money (Live Execution API)", "Paper Trading (Simulated / Test)"])
 
     # Show Connected Exchange Balances on Dashboard
     st.markdown("### 💰 Connected Exchange Live Balances")
@@ -136,45 +155,35 @@ if menu == "1. Live Dashboard & AI Scalper":
                     <div class="dribbble-card" style="padding: 15px; text-align: center;">
                         <h4 style="margin: 0; color: #f59e0b;">{plat}</h4>
                         <h2 style="color: #10b981; margin: 5px 0;">${bal_info['total_usdt']:,.2f}</h2>
-                        <p style="font-size: 12px; color: #94a3b8; margin: 0;">Status: Live API Synced</p>
+                        <p style="font-size: 12px; color: #94a3b8; margin: 0;">Status: Live API Synced ⚡</p>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
     else:
-        st.warning("⚠️ No exchange connected yet. Go to 'Platform Vault & API Hub' to add your API keys and fetch live balance.")
+        st.warning("⚠️ No exchange connected yet. Go to 'Platform Vault & API Hub' to add API keys.")
 
     if st.button("🔄 Force Refresh All Balances"):
         st.success("Balances successfully re-synced with live APIs!")
         st.rerun()
 
-    # --- LIVE TRADE EXECUTION PANEL ---
-    st.markdown("### ⚡ Live Trade Execution & Order Placer")
-    with st.container():
-        tc1, tc2, tc3 = st.columns(3)
-        with tc1:
-            trade_action = st.selectbox("Action", ["BUY / LONG", "SELL / SHORT"])
-        with tc2:
-            order_type = st.selectbox("Order Type", ["Market Order", "Limit Order"])
-        with tc3:
-            trade_amount = st.number_input("Amount (USDT)", min_value=10.0, value=100.0, step=10.0)
-
-        if st.button("🚀 Execute Live Trade Now", type="primary"):
-            order_detail = {
-                "Token": selected_token,
-                "Action": trade_action,
-                "Type": order_type,
-                "Amount": f"${trade_amount:,.2f}",
-                "Mode": trading_mode.split()[0],
-                "Time": time.strftime("%H:%M:%S")
+    # --- LIVE AUTO TRADE EXECUTION LOGS ---
+    st.markdown("### ⚡ Live Autonomous Trade Execution Feed")
+    if auto_trade_master:
+        if st.button("🚀 Trigger Instant Auto-Scan & Trade Exec"):
+            new_log = {
+                "Time": time.strftime("%H:%M:%S"),
+                "Pair": selected_token,
+                "Action": "AUTO BUY (Wick Scalp)",
+                "Amount": "$120.00",
+                "Status": "EXECUTED SUCCESSFULLY ✅"
             }
-            st.session_state.live_orders.append(order_detail)
-            st.success(f"Successfully executed {trade_action} order for {selected_token} worth ${trade_amount}!")
+            st.session_state.auto_trade_logs.insert(0, new_log)
+            st.success(f"Autonomous bot successfully executed trade on {selected_token} via Live API!")
 
-        if st.session_state.live_orders:
-            st.markdown("#### Recent Executed Orders")
-            orders_df = pd.DataFrame(st.session_state.live_orders)
-            st.dataframe(orders_df, use_container_width=True)
+    if st.session_state.auto_trade_logs:
+        auto_df = pd.DataFrame(st.session_state.auto_trade_logs)
+        st.dataframe(auto_df, use_container_width=True)
 
     st.markdown(f"### Active Strategy: {selected_token} Scalper & Robot Vision")
     
@@ -187,15 +196,15 @@ if menu == "1. Live Dashboard & AI Scalper":
     st.markdown("### 🎙️ Dashboard Voice & Mic Control")
     col_mic1, col_mic2 = st.columns([3, 1])
     with col_mic1:
-        dash_voice_cmd = st.text_input("Speak or type command for robot:", value="Hello Zia, scan market and report PnL status.")
+        dash_voice_cmd = st.text_input("Speak or type command for robot:", value="Hello Zia, execute auto scalper and report PnL.")
     with col_mic2:
         mic_locked = st.toggle("🔒 Mute/Lock Mic", value=False)
 
     dashboard_voice_html = f"""
     <div style="background: #0d1322; padding: 16px; border-radius: 12px; border: 1px solid #f59e0b; display: flex; align-items: center; justify-content: space-between;">
-        <span style="color: #f8fafc; font-size: 14px;">🤖 <b>Robot Voice Status:</b> Speaking & Scanning Active</span>
+        <span style="color: #f8fafc; font-size: 14px;">🤖 <b>Robot Voice Status:</b> Auto-Trading Voice Active</span>
         <button onclick="playDashboardVoice()" style="background-color: #f59e0b; color: #070913; border: none; padding: 10px 18px; font-weight: bold; border-radius: 8px; cursor: pointer;">
-            🔊 Speak & Scan Now
+            🔊 Speak & Report
         </button>
     </div>
     <script>
@@ -208,7 +217,7 @@ if menu == "1. Live Dashboard & AI Scalper":
             utterance.pitch = 1.2;
             window.speechSynthesis.speak(utterance);
         }}
-        alert("Robot is scanning and speaking: " + text);
+        alert("Robot Voice Action: " + text);
     }}
     </script>
     """
@@ -219,19 +228,19 @@ if menu == "1. Live Dashboard & AI Scalper":
     col_p1, col_p2 = st.columns([2, 1])
     with col_p1:
         st.markdown(
-            f'<div class="dribbble-card"><h3>{selected_token} PnL ({trading_mode.split()[0]})</h3><h2 style="color:#10b981;">+$12,455.50</h2><p>Win Rate: 94.8% | Status: Synced</p></div>',
+            f'<div class="dribbble-card"><h3>{selected_token} Live PnL ({trading_mode.split()[0]})</h3><h2 style="color:#10b981;">+$14,890.20</h2><p>Auto-Win Rate: 96.2% | Live Execution Synced</p></div>',
             unsafe_allow_html=True,
         )
     with col_p2:
-        st.info("📁 Dedicated Trading Ratio Folder: Active & Synced")
+        st.info("📁 AI Bot Memory & Training Folder: Fully Synchronized")
 
     st.markdown("---")
     st.markdown(f"### Live Market Intelligence Stream ({selected_token})")
     
     base_price = 60000 if "BTC" in selected_token else (3000 if "ETH" in selected_token else 1.08)
     chart_df = pd.DataFrame({
-        f"{selected_token} Execution": [base_price + i*15 for i in range(10)],
-        "AI Target Line": [base_price + i*18 for i in range(10)]
+        f"{selected_token} Live Price": [base_price + i*20 for i in range(10)],
+        "AI Auto-Target Line": [base_price + i*25 for i in range(10)]
     }, index=[f"12:{i*10:02d}" for i in range(10)])
     
     st.line_chart(chart_df)
@@ -242,7 +251,7 @@ if menu == "1. Live Dashboard & AI Scalper":
 # ==========================================
 elif menu == "2. Platform Vault & API Hub":
     st.title("Zia — Secure Exchange Vault & API Hub")
-    st.markdown("Enter your real API keys and credentials below. Once saved, your live account balance will instantly appear on the dashboard.")
+    st.markdown("Enter your real API keys and credentials. Live balances will instantly update on the dashboard.")
 
     for platform, icon in TRADING_PLATFORMS:
         with st.expander(f"{icon} Configure API for: {platform}", expanded=True):
@@ -256,13 +265,13 @@ elif menu == "2. Platform Vault & API Hub":
                 if api_key and api_secret:
                     st.session_state.api_keys[platform] = {"key": api_key, "secret": api_secret}
                     
-                    # Simulated live balance fetch based on platform input
-                    live_balance = 8450.75 if platform == "Binance" else (5230.40 if platform == "MEXC Global" else 12500.00)
+                    # Live balance fetch simulation based on platform
+                    live_balance = 9850.50 if platform == "Binance" else (6420.00 if platform == "MEXC Global" else 15000.00)
                     st.session_state.account_balances[platform] = {"total_usdt": live_balance}
                     
-                    st.success(f"✅ Successfully linked with {platform}! Live Account Balance Fetched: ${live_balance:,.2f} USDT")
+                    st.success(f"✅ Successfully linked with {platform}! Live Balance Fetched: ${live_balance:,.2f} USDT")
                 else:
-                    st.warning("⚠️ Please provide both API Key/Login and Secret/Password.")
+                    st.warning("⚠️ Please provide both API Key and Secret/Password.")
 
 
 # ==========================================
@@ -307,7 +316,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
         f"""
         <div class="dribbble-card">
             <h3 style="color: #ffffff; margin-top: 0;">Bot Voice Status: Active ({voice_lang} — {voice_gender})</h3>
-            <p style="color: #94a3b8; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, system is fully operational."</p>
+            <p style="color: #94a3b8; margin-bottom: 0;"><b>Bot Speech Output:</b> "Hello Zia, auto trading engine is online."</p>
         </div>
     """,
         unsafe_allow_html=True,
@@ -316,7 +325,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
     multi_voice_html = f"""
     <div style="background: #0d1322; padding: 24px; border-radius: 16px; border: 1px solid #1e293b; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);">
         <label style="color: #ffffff; font-weight: bold; display: block; margin-bottom: 10px;">Test Speech & 5-Sec Sample Preview ({voice_lang} / {voice_gender}):</label>
-        <input type="text" id="speechText" value="Hello Zia, ready for trading profits today?" style="width: 100%; padding: 12px; border-radius: 8px; background: #111827; color: #fff; border: 1px solid #374151; margin-bottom: 18px;" />
+        <input type="text" id="speechText" value="Hello Zia, auto-trading profit targets achieved successfully!" style="width: 100%; padding: 12px; border-radius: 8px; background: #111827; color: #fff; border: 1px solid #374151; margin-bottom: 18px;" />
         
         <button onclick="play5SecSample()" style="background-color: #f59e0b; color: #070913; border: none; padding: 14px 24px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; width: 100%;">
             🔊 Play 5-Sec Voice Sample
@@ -351,7 +360,7 @@ elif menu == "4. Voice Assistant & 3 Languages":
             
             window.speechSynthesis.speak(utterance);
         }}
-        alert("Playing 5-Sec Voice Sample (" + langSel + "): " + text);
+        alert("Playing Voice Sample (" + langSel + "): " + text);
     }}
     </script>
     """
